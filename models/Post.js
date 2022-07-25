@@ -1,6 +1,6 @@
-import mongoose, { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const PostSchema = new Schema({
+const PostSchema = new mongoose.Schema({
     authorID: {
         type: String,
         required: true
@@ -22,3 +22,5 @@ const PostSchema = new Schema({
         required: false
     }
 })
+const Post = mongoose.model('Post', PostSchema)
+export default Post;

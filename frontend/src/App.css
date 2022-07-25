@@ -132,6 +132,9 @@ html {
 .posts{
   display: grid;
 }
+.post-parent{
+  text-decoration: none;
+}
 .post{
   display: block;
   border: 1px solid black;
@@ -140,6 +143,7 @@ html {
   overflow-y: auto;
   margin: auto;
   text-align: center;
+  color: black;
 }
 .post-body>h1::after{
   border-bottom: 5px solid black;
