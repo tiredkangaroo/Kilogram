@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Logout = () => {
-    axios.get("http://localhost:8000/logout", {withCredentials: true}).then(() => {
+    axios.get("/logout", {withCredentials: true}).then(() => {
         window.location.href = "/"
     }).catch((e) => {
         window.location.href = "/"
