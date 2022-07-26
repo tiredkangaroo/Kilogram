@@ -13,9 +13,6 @@ const Home = ({user}) => {
             setLoaded(true)
         })
     }, [])
-    const generatePostLink = (id) => {
-        return `/post#${id}`
-    }
     if (user.isAnonymous && user.completedLoading){
         return (
             <div className="home-nocreds">
@@ -43,7 +40,7 @@ const Home = ({user}) => {
         return (
             <div className="posts">
                 {posts.map((element) => {
-                    return <div key={element._id} className="post-parent"><br/><a href={generatePostLink(element._id)}><PostRenderer post={element} /></a></div>
+                    return <div key={element._id} className="post-parent"><br/><PostRenderer post={element} /></div>
                 })}
             </div>
         )

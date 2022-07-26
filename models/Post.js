@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema({
+    authorEmail:{ //not to be inherited from User(authorID).email
+        type: String,
+        required: true
+    },
     authorID: {
         type: String,
         required: true

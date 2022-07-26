@@ -132,8 +132,8 @@ html {
 .posts{
   display: grid;
 }
-.post-parent{
-  text-decoration: none;
+.post-parent, .post, .post-body, .post-link{
+  text-decoration: dotted;
 }
 .post{
   display: block;
@@ -144,7 +144,4 @@ html {
   margin: auto;
   text-align: center;
   color: black;
-}
-.post-body>h1::after{
-  border-bottom: 5px solid black;
 }

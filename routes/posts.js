@@ -11,18 +11,7 @@ const ObjectId = mongoose.Types.ObjectId
 
 postRouter.get("/all", async (req, res) => {
     const result = await Post.find({})
-    let resultWithAuthors = [...result]
-    resultWithAuthors.forEach(async (ele, idx) => {
-        const result = await User.findOne({_id: ObjectId(ele.authorID)})
-        ele.authorID = result.email
-        resultWithAuthors[idx] = ele
-        if (idx + 1 === resultWithAuthors.length){
-            return res.json(resultWithAuthors)
-        }
-    })
-    if (result.length === 0){
-        res.json([])
-    }
+    return res.json(result)
 })
 postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const isLoggedIn = await loggedIn(req);
@@ -30,10 +19,12 @@ postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const markdownText = req.body.markdownText;
     if (!markdownText) {return res.status(400).send(req.body)};
     const authorID = isLoggedIn[1].userID; //userSession
+    const author = await User.findOne({_id: ObjectId(authorID)})
+    if (!author) { return res.status(404).send("User associated with session does not exist.") }
     const current_date = new Date();
     const likerIDs = []
     const comments = []
-    const newPost = new Post({authorID: authorID, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
+    const newPost = new Post({authorEmail: author.email, authorID: authorID, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
     await newPost.save()
     return res.status(200).send("Created post.")
 })
