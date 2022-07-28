@@ -36,12 +36,15 @@ const Home = ({user}) => {
         }
     }
     else{
-        console.log(posts)
         return (
-            <div className="posts">
-                {posts.map((element) => {
-                    return <div key={element._id} className="post-parent"><br/><PostRenderer post={element} /></div>
-                })}
+            <div className="authenticated-home">
+                <br/>
+                <a href="/new"><button className="home-newpost-button">New Post</button></a>
+                <div className="posts">
+                    {posts.map((element) => {
+                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>
+                    })}
+                </div>
             </div>
         )
     }

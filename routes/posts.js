@@ -9,9 +9,17 @@ const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 const postRouter = express.Router()
 const ObjectId = mongoose.Types.ObjectId
 
+Array.prototype.reversed = function (){
+    let newArray = [];
+    for (let i = this.length - 1; i >= 0; i--){
+      newArray.push(this[i])
+    }
+    return newArray;
+}
+
 postRouter.get("/all", async (req, res) => {
     const result = await Post.find({})
-    return res.json(result)
+    return res.json(result.reversed())
 })
 postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const isLoggedIn = await loggedIn(req);
@@ -41,5 +49,17 @@ postRouter.get("/post", urlEncodedParser, async (req, res) => {
     }
     if (!post) { return res.status(404).send("Post with ID does not exist.") }
     return res.json(post)
+})
+postRouter.post("/delete", urlEncodedParser, async (req, res) => {
+    const postID = req.body.postID;
+    const isLoggedIn = await loggedIn(req);
+    if (!postID) { return res.status(400).send("PostID is required.") }
+    const post = await Post.findOne({_id: ObjectId(postID)})
+    if (!post) { res.status(404).send("Post deletion process was unsucessful. Post was not found.") }
+    const sessionUserID = isLoggedIn[1].userID //the user session and its id
+    if (!(post.authorID === sessionUserID)) { return res.status(403).send("Not enough permissions.") }
+    const deletePost = await Post.deleteOne({_id: postID})
+    if (deletePost) { return res.status(200).send("Sucessfully deleted the post.") }
+    else{ return res.status(404).send("Post deletion process was unsucessful.") }
 })
 export default postRouter;

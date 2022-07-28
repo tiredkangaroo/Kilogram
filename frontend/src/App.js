@@ -9,10 +9,10 @@ import Register from "./components/Register.jsx";
 import Confirm from "./components/Confirm.jsx";
 import Navbar from './components/Navbar.jsx';
 import Post from "./components/Post.jsx"
-
+import NewPost from "./components/NewPost.jsx"
 const App = () => {
   const [user, setUser] = useState({isAnonymous: true, completedLoading: false})
-  const loadingSpinnerTime = 300;
+  const loadingSpinnerTime = 10;
   useEffect(() => {
     axios.get("/whoami", {withCredentials: true}).then( (res) => {
       if (res.status === 200) {
@@ -35,7 +35,8 @@ const App = () => {
         <Route path="/logout" element={<Logout />}></Route>
         <Route path="/register" element={<Register />} />
         <Route path="/confirm" element={<Confirm />} />
-        <Route path="/post" element={<Post />} />
+        <Route path="/post" element={<Post user={user} />} />
+        <Route path="/new" element={<NewPost user={user} />} />
       </Routes>
     </div>
   );

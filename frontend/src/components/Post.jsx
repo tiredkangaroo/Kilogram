@@ -2,7 +2,7 @@ import axios from 'axios';
 import { useEffect, useState } from 'react';
 import PostRenderer from "./PostRenderer.jsx"
 
-const Post = () => {
+const Post = ({user}) => {
     const [loaded, setLoaded] = useState(false);
     const [post, setPost] = useState(null);
     useEffect(() => {
@@ -16,7 +16,7 @@ const Post = () => {
         })
     }, [])
     if (loaded){
-        return <PostRenderer post={post} />
+        return (<><br/><PostRenderer user={user} post={post} hideURL={true} /></>)
     }
     else{
         return <span className="uncompleted-loading"></span>

@@ -2,8 +2,12 @@
 html {
   --home-nocreds-authbuttons-padding: 22px;
   --home-nocreds-authbuttons-width: 100%;
-  --website-theme: #82ffa8; }
-
+  --website-theme: #82ffa8; 
+  --postrenderer-confirm-modal-buttons-gap: 1rem;
+  --postrender-confirm-modal-buttons-size: 3rem;
+  --postrenderer-confirm-modal-bordersize: 0.25rem;
+  overflow-x: hidden;
+}
 .heading-nav {
   background-color: var(--website-theme);
   position: absolute;
@@ -144,4 +148,76 @@ html {
   margin: auto;
   text-align: center;
   color: black;
+  z-index: 1;
+  overflow-x: hidden;
+}
+.post>a{
+  text-decoration: none;
+  color: black;
+}
+.post>a>img{
+  object-fit: cover;
+  width: 100%;
+  height: 250px;
+}
+.postrenderer-management-buttons{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.postrenderer-confirm-modal-parent{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.postrenderer-confirm-modal{
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  border: var(--postrenderer-confirm-modal-bordersize) solid red;
+  background-color: white;
+  z-index: 2;
+  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  vertical-align: middle;
+  top: calc(40% - 0.5rem);
+  /* transform: translate(0%, 40%); */
+  text-align: center;
+}
+.postrenderer-confirm-modal-button-yes{
+  margin-right: var(--postrenderer-confirm-modal-buttons-gap);
+  width: var(--postrenderer-confirm-modal-button-size);
+  height: var(--postrenderer-confirm-modal-button-size);
+}
+.postrenderer-confirm-modal-button-no{
+  margin-left: var(--postrenderer-confirm-modal-buttons-gap);
+  width: var(--postrenderer-confirm-modal-buttons-size);
+  height: var(--postrenderer-confirm-modal-buttons-size);
+}
+.authenticated-home{
+  text-align: center;
+}
+.newpost-markdown-textarea{
+  width: 48%;
+  height: calc(100vh - 50px - 2rem - 2rem);
+  resize: none;
+  outline: none;
+  margin-top: 1rem;
+}
+.newPost-window{
+  display: flex;
+  gap: 0.67rem;
+}
+.newPost-window>p{
+  width: calc(100vw - 1rem - 0.67rem - 48%);
+  word-break: break-all;
+  /* text-align: left; */
+}
+.newPost-window-parent{
+  margin-top: 1.2rem;
+  text-align: center;
+}
+.newPost-error{
+  display: none;
 }
