@@ -2,6 +2,7 @@ import axios from "axios";
 import { useRef } from "react";
 const Register = () => {
     const emailRef = useRef();
+    const usernameRef = useRef();
     const passwordRef = useRef();
     const passwordConfirmRef = useRef();
     const errorDisplayRef = useRef();
@@ -10,6 +11,7 @@ const Register = () => {
         e.preventDefault();
         const params = new URLSearchParams();
         params.append("email", emailRef.current.value);
+        params.append("username", usernameRef.current.value)
         params.append("password", passwordRef.current.value);
         params.append("password_confirmation", passwordConfirmRef.current.value);
         axios.post("/register", params, {withCredentials: true}).then(async (response) => {
@@ -18,7 +20,7 @@ const Register = () => {
                 confirmParams.append("email", emailRef.current.value)
                 confirmParams.append("token", response.data)
                 await axios.post("/sendConfirmationToken", confirmParams)
-                window.location.href = "/"
+                window.location.href = "/confirmEmail"
             }
             else {
                 errorDisplayRef.current.innerText = response.data;
@@ -34,6 +36,7 @@ const Register = () => {
         <><p className="register-errorDisplay" ref={errorDisplayRef}></p>
             <form className="auth-form" onSubmit={handleSubmit}>
                 <p>Email: <input ref={emailRef} placeholder="Ex: johndoe@example.com" type="email"></input></p>
+                <p>Username: <input ref={usernameRef} placeholder="Ex: johndoe" type="username"></input></p>
                 <p>Password: <input ref={passwordRef} type="password" placeholder="Enter Secure Password Here"></input></p>
                 <p>Password Confirmation: <input ref={passwordConfirmRef} type="password" placeholder="Re-enter the Password Above" /></p>
                 <button type="submit">Submit</button>

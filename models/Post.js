@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 const PostSchema = new mongoose.Schema({
-    authorEmail:{ //not to be inherited from User(authorID).email
+    authorUsername:{ //not to be inherited from User(authorID).email
         type: String,
         required: true
     },
@@ -9,6 +9,10 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    // title: {
+    //     type: String,
+    //     required: true
+    // },
     markdownText: {
         type: String,
         required: true

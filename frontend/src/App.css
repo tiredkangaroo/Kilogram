@@ -221,3 +221,37 @@ html {
 .newPost-error{
   display: none;
 }
+.confirmEmail-prompt-parent{
+  display: flex;
+  justify-content: center;
+}
+.confirmEmail-prompt{
+  vertical-align: middle;
+  text-align: center;
+  margin-top: calc(49vh - 5rem - 3rem - 5rem);
+}
+.confirmEmail-prompt>h1{
+  font-size: 5rem;
+}
+.confirmEmail-prompt>p{
+  font-size: 0.8rem;
+}
+.navbar-username{
+  color: black;
+}
+.profile-parent{
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  height: calc(99vh);
+  width: 100%;
+}
+.profile{
+  background-color: red;
+  padding: 2.5rem 2rem 2.5rem 2rem;
+  text-align: center;
+}
+.email-url, .post-url{
+  color: black;
+}

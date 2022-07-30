@@ -8,6 +8,7 @@ import Session from "../models/Session.js";
 import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from 'dotenv';
+import Post from "../models/Post.js";
 
 const OAuth2 = google.auth.OAuth2;
 const authrouter = express.Router()
@@ -16,19 +17,28 @@ const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 dotenv.config();
 
 authrouter.post("/register", urlEncodedParser, (req, res) => {
+    const new_username = req.body.username
     const new_email = req.body.email
     const new_password = req.body.password
     const password_confirmation = req.body.password_confirmation
     User.findOne({email: new_email}).then((result) => {
         if (result){
-            return res.send("User already exists. Please login instead.")
+            return res.status(400).send("User already exists. Please login instead.")
         }
         else{
-            if (!new_email || !new_password || !password_confirmation){
+            if (!new_email || !new_password || !new_username || !password_confirmation){
                 return res.status(400).send("All fields must be filled out.")
             }
             if (!validator.isEmail(new_email)){
                 return res.status(400).send("Email must be valid")
+            }
+            User.findOne({username: new_username}).then((usernameResult) => {
+                if (usernameResult){
+                    return res.status(400).send("Username already in use.")
+                }
+            })
+            if (new_username.includes(" ")){
+                return res.status(400).send("Username must not contain a space.")
             }
             if (new_password.length < 8){
                 return res.status(400).send("The length of the password must be 8 or greater.")
@@ -46,7 +56,7 @@ authrouter.post("/register", urlEncodedParser, (req, res) => {
                 else{
                     const encryptedPassword = response
                     const confirmToken = crypto.randomBytes(256).toString('hex')
-                    const new_user = new User({email: new_email, password: encryptedPassword, confirmToken: confirmToken, confirmed: false})
+                    const new_user = new User({email: new_email, username: new_username, password: encryptedPassword, confirmToken: confirmToken, confirmed: false})
                     new_user.save()
                     // const three_months_from_now = new Date();
                     // three_months_from_now.setDate(three_months_from_now.getDay() + 90);
@@ -138,7 +148,7 @@ authrouter.get("/whoami", (req, res) => {
                 }
                 User.findOne({"_id": result.userID}).then((result) => {
                     if (result){
-                        return res.json({"email": result.email})
+                        return res.json({"email": result.email, "username": result.username, "id": result._id})
                     }
                     else{
                         res.status(404).send("Did not find a user associated with the token.")
@@ -240,5 +250,12 @@ authrouter.get("/confirm", (req, res) => {
         return res.status(404).send("Make sure to send the token.")
     }
 })
-
+authrouter.get("/userdetails", async (req, res) => {
+    const username = req.query.username;
+    if (!username) {return res.status(400).send("Username is a required parameter.")}
+    const result = await User.findOne({username: username})
+    if (!result) {return res.status(404).send("User not found.")}
+    const posts = await Post.find({authorID: result._id})
+    res.json({email: result.email, username: result.username, posts: posts, confirmed: result.confirmed});
+})
 export default authrouter;

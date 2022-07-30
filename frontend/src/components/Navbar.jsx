@@ -15,7 +15,7 @@ const Navbar = ({user}) => {
     }
     const Username = () => {
         if (!user.isAnonymous){
-            return user.email
+            return <a className="navbar-username" href={`/profile#@${user.username}`}>{user.username}</a>;
         }
     }
     return (

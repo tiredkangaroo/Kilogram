@@ -34,7 +34,7 @@ const PostRenderer = ({user, post, hideURL}) => {
         modalRef.current.style.display = "none";
     }
     const managementButtons = () => {
-        if (user.email === post.authorEmail){
+        if (user.id === post.authorID){
             return (
                 <p className="postrenderer-management-buttons"><button onClick={nullA} className="postrenderer-management-button">Edit</button>&nbsp;<button onClick={deletePostModalOpen} className="postrenderer-management-button">Delete</button></p>
             )
@@ -52,7 +52,7 @@ const PostRenderer = ({user, post, hideURL}) => {
                         </div>
                     </div>
                     <div className="post">
-                        <p>{post.authorEmail}</p>
+                        <p>{post.authorUsername}</p>
                         {managementButtons()}
                         <hr></hr>
                         <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>
@@ -71,7 +71,7 @@ const PostRenderer = ({user, post, hideURL}) => {
                     </div>
                     <div className="post">
                         <a href={`/post#${post._id}`}>
-                            <p>{post.authorEmail}</p>
+                            <p>{post.authorUsername}</p>
                             {managementButtons()}
                             <hr></hr>
                             <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>

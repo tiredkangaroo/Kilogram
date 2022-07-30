@@ -11,6 +11,8 @@ dotenv.config();
 const app = express()
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}, "*"))
 app.use("/storage", express.static("storage"))
+app.use(express.json({limit: '0.151mb'}));
+app.use(express.urlencoded({limit: '0.151mb', extended: true}));
 app.use(cookieParser())
 app.use("/posts", postsRouter)
 app.use(authrouter)

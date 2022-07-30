@@ -5,7 +5,7 @@ import loggedIn from "./loginRequired.js";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 
-const urlEncodedParser = bodyParser.urlencoded({ extended: false })
+const urlEncodedParser = bodyParser.urlencoded({ extended: true })
 const postRouter = express.Router()
 const ObjectId = mongoose.Types.ObjectId
 
@@ -21,18 +21,38 @@ postRouter.get("/all", async (req, res) => {
     const result = await Post.find({})
     return res.json(result.reversed())
 })
+const markdownTextEmojis = (md) => {
+    const wrappingSymbol = ":" //: wraps the key, so :grin: will translate it into the grin
+    const map = {
+        "grin": "😃",
+        "cry": "😢",
+        "sob": "😭",
+        "happycry": "🥲",
+        "sunglasses": "😎",
+        "party": "🎉",
+        "ghost": "👻",
+        "skull": "💀"
+    }
+    for (let i = 0; i < Object.keys(map).length; i++){
+        let re = new RegExp(wrappingSymbol + Object.keys(map)[i] + wrappingSymbol, "g")
+        md = md.replace(re, Object.values(map)[i])
+    }
+    return md;
+}
 postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const isLoggedIn = await loggedIn(req);
     if (!isLoggedIn[0]){return res.status(403).send("User must be logged in to create a post.")}; //if the user is not logged in
-    const markdownText = req.body.markdownText;
+    let markdownText = req.body.markdownText;
     if (!markdownText) {return res.status(400).send(req.body)};
+    if (markdownText.length > 150304) {return res.status(400).send("Limit for the post is 150,304 characters.")}
     const authorID = isLoggedIn[1].userID; //userSession
     const author = await User.findOne({_id: ObjectId(authorID)})
     if (!author) { return res.status(404).send("User associated with session does not exist.") }
     const current_date = new Date();
     const likerIDs = []
     const comments = []
-    const newPost = new Post({authorEmail: author.email, authorID: authorID, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
+    markdownText = markdownTextEmojis(markdownText)
+    const newPost = new Post({authorUsername: author.username, authorID: authorID, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
     await newPost.save()
     return res.status(200).send("Created post.")
 })

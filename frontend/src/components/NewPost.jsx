@@ -41,7 +41,7 @@ const NewPost = ({user}) => {
                 <p ref={errorRef} className="newPost-error"></p>
                 <button onClick={handleNewPost}>Create</button>
                 <div className="newPost-window">
-                    <textarea required={true} ref={markdownRef} onChange={markdownChange} autoFocus={true} className="newpost-markdown-textarea"></textarea>
+                    <textarea required={true} ref={markdownRef} maxLength={150304} onChange={markdownChange} autoFocus={true} className="newpost-markdown-textarea"></textarea>
                     <p dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(markdown))}}></p>
                 </div>
             </div>

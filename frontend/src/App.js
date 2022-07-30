@@ -8,15 +8,19 @@ import Logout from "./components/Logout.jsx";
 import Register from "./components/Register.jsx";
 import Confirm from "./components/Confirm.jsx";
 import Navbar from './components/Navbar.jsx';
-import Post from "./components/Post.jsx"
-import NewPost from "./components/NewPost.jsx"
+import Post from "./components/Post.jsx";
+import NewPost from "./components/NewPost.jsx";
+import ConfirmEmail from "./components/ConfirmEmail.jsx"
+import Profile from "./components/Profile.jsx";
 const App = () => {
   const [user, setUser] = useState({isAnonymous: true, completedLoading: false})
+  window.user = user
   const loadingSpinnerTime = 10;
+  let previousHash = window.location.hash;
   useEffect(() => {
     axios.get("/whoami", {withCredentials: true}).then( (res) => {
       if (res.status === 200) {
-        setTimeout(() => {setUser({email: res.data.email, isAnonymous: false, completedLoading: true})}, loadingSpinnerTime);
+        setTimeout(() => {setUser({id: res.data.id, email: res.data.email, username: res.data.username, isAnonymous: false, completedLoading: true})}, loadingSpinnerTime);
       }
       else{
         setTimeout(() => {setUser({isAnonymous: true, completedLoading: true})}, loadingSpinnerTime)
@@ -37,6 +41,8 @@ const App = () => {
         <Route path="/confirm" element={<Confirm />} />
         <Route path="/post" element={<Post user={user} />} />
         <Route path="/new" element={<NewPost user={user} />} />
+        <Route path="/confirmEmail" element={<ConfirmEmail />} />
+        <Route path="/profile" element={<Profile user={user} />} />
       </Routes>
     </div>
   );
