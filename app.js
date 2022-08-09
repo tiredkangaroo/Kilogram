@@ -5,6 +5,7 @@ import authrouter from './routes/auth.js';
 import postsRouter from "./routes/posts.js";
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
+import path from 'path';
 
 dotenv.config();
 
@@ -18,6 +19,10 @@ app.use(cookieParser())
 app.use("/api/posts", postsRouter)
 app.use("/api", authrouter)
 mongoose.connect(process.env.MONGODB_URI)
+
+app.get('*', (req, res) => {
+    res.sendFile(path.resolve(path.resolve(), 'frontend', 'build', 'index.html'));
+});
 
 app.listen(process.env.PORT || 8000, "0.0.0.0", () => {
     console.log("Server is running.")
