@@ -9,6 +9,8 @@ import cors from 'cors';
 dotenv.config();
 
 const app = express()
+
+app.use(express.static(path.join(__dirname, "./frontend/build")))
 app.use(cors({credentials: true, origin: 'http://localhost:3000'}, "*"))
 app.use("/storage", express.static("storage"))
 app.use(express.json({limit: '0.151mb'}));
@@ -19,7 +21,14 @@ app.use(authrouter)
 mongoose.connect(process.env.MONGODB_URI)
 
 app.get("/", (req, res) => {
-    res.send("hello world")
+    res.sendFile(
+        path.join(__dirname, "./frontend/build/index.html"),
+        (err) => {
+            if (err){
+                res.status(500).send(err)
+            }
+        }
+    )
 })
 
 app.listen(8000, "0.0.0.0", () => {
