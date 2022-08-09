@@ -19,6 +19,6 @@ app.use("/api/posts", postsRouter)
 app.use("/api", authrouter)
 mongoose.connect(process.env.MONGODB_URI)
 
-app.listen(8000, "0.0.0.0", () => {
+app.listen(process.env.PORT || 8000, "0.0.0.0", () => {
     console.log("Server is running.")
 })
