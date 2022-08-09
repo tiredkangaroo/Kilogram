@@ -11,8 +11,7 @@ const Post = ({user}) => {
             setPost(result.data);
             setLoaded(true);
         }).catch((e) => {
-            console.log(e)
-            // window.location.href = "/";
+            console.error(e)
         })
     }, [])
     if (loaded){

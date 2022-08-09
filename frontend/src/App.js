@@ -1,4 +1,4 @@
-import { Route, Routes } from "react-router-dom";
+import { Route, Routes, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
@@ -12,11 +12,18 @@ import Post from "./components/Post.jsx";
 import NewPost from "./components/NewPost.jsx";
 import ConfirmEmail from "./components/ConfirmEmail.jsx"
 import Profile from "./components/Profile.jsx";
+import Edit from "./components/Edit.jsx";
+//eslint-disable-next-line
+Array.prototype.remove = function (value){
+  return this.filter(function (ele){
+    return ele !== value;
+  })
+}
 const App = () => {
   const [user, setUser] = useState({isAnonymous: true, completedLoading: false})
+  const location = useLocation();
   window.user = user
   const loadingSpinnerTime = 10;
-  let previousHash = window.location.hash;
   useEffect(() => {
     axios.get("/whoami", {withCredentials: true}).then( (res) => {
       if (res.status === 200) {
@@ -29,21 +36,30 @@ const App = () => {
         setTimeout(() => {setUser({isAnonymous: true, completedLoading: true})}, loadingSpinnerTime);
     })
   }, [])
+  const HomeLink = () => {
+    if (!(location.pathname === "/")){
+      return <a href="/" className="go-to-home">Go to Home</a>
+    }
+  }
   return (
     <div className="App">
       <div className="divider"></div>
       <Navbar user={user} />
-      <Routes>
-        <Route path="/" element={<Home user={user} />} />
-        <Route path="/login" element={<Login user={user} />} />
-        <Route path="/logout" element={<Logout />}></Route>
-        <Route path="/register" element={<Register />} />
-        <Route path="/confirm" element={<Confirm />} />
-        <Route path="/post" element={<Post user={user} />} />
-        <Route path="/new" element={<NewPost user={user} />} />
-        <Route path="/confirmEmail" element={<ConfirmEmail />} />
-        <Route path="/profile" element={<Profile user={user} />} />
-      </Routes>
+      <div className="route-container">
+        <HomeLink />
+        <Routes>
+          <Route path="/" element={<Home user={user} />} />
+          <Route path="/login" element={<Login user={user} />} />
+          <Route path="/logout" element={<Logout />}></Route>
+          <Route path="/register" element={<Register />} />
+          <Route path="/confirm" element={<Confirm />} />
+          <Route path="/post" element={<Post user={user} />} />
+          <Route path="/new" element={<NewPost user={user} />} />
+          <Route path="/confirmEmail" element={<ConfirmEmail />} />
+          <Route path="/profile" element={<Profile user={user} />} />
+          <Route path="/edit" element={<Edit />} />
+        </Routes>
+      </div>
     </div>
   );
 }

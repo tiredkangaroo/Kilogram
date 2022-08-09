@@ -16,7 +16,6 @@ Array.prototype.reversed = function (){
     }
     return newArray;
 }
-
 postRouter.get("/all", async (req, res) => {
     const result = await Post.find({})
     return res.json(result.reversed())
@@ -42,8 +41,10 @@ const markdownTextEmojis = (md) => {
 postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const isLoggedIn = await loggedIn(req);
     if (!isLoggedIn[0]){return res.status(403).send("User must be logged in to create a post.")}; //if the user is not logged in
+    const title = req.body.title;
+    if (!title) { return res.status(400).send("Missing paramaters.")}
     let markdownText = req.body.markdownText;
-    if (!markdownText) {return res.status(400).send(req.body)};
+    if (!markdownText) {return res.status(400).send("Missing paramaters.")};
     if (markdownText.length > 150304) {return res.status(400).send("Limit for the post is 150,304 characters.")}
     const authorID = isLoggedIn[1].userID; //userSession
     const author = await User.findOne({_id: ObjectId(authorID)})
@@ -52,9 +53,9 @@ postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
     const likerIDs = []
     const comments = []
     markdownText = markdownTextEmojis(markdownText)
-    const newPost = new Post({authorUsername: author.username, authorID: authorID, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
+    const newPost = new Post({authorUsername: author.username, authorID: authorID, title: title, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
     await newPost.save()
-    return res.status(200).send("Created post.")
+    return res.status(200).json(newPost._id)
 })
 postRouter.get("/post", urlEncodedParser, async (req, res) => {
     const postID = req.query.id
@@ -81,5 +82,41 @@ postRouter.post("/delete", urlEncodedParser, async (req, res) => {
     const deletePost = await Post.deleteOne({_id: postID})
     if (deletePost) { return res.status(200).send("Sucessfully deleted the post.") }
     else{ return res.status(404).send("Post deletion process was unsucessful.") }
+})
+postRouter.post("/heart", urlEncodedParser, async (req, res) => {
+    const isLoggedIn = await loggedIn(req);
+    const postID = req.body.postID;
+    let post;
+    let user;
+    if (!isLoggedIn[0]){
+        return res.status(403).send("Must be logged in to heart and unheart a post.")
+    }
+    if (!postID){
+        return res.status(400).send("PostID is required.")
+    }
+    try{
+        post = await Post.findOne({_id: ObjectId(postID)})
+        user = await User.findOne({_id: ObjectId(isLoggedIn[1].userID)})
+    }
+    catch{
+        return res.status(400).send("PostID or UserID is invalid.")
+    }
+    if (!post){
+        return res.status(404).send("Post with ID does not exist.")
+    }
+    if (!user){
+        return res.status(404).send("User session is invalid.")
+    }
+    const c = new Date();
+    if (Object.keys(post.likerIDs).includes(user._id.toString())){
+        const userID = user._id
+        const {[userID]: _, ...modifiedLikerIDs} = post.likerIDs;
+        await Post.updateOne(post, {likerIDs: modifiedLikerIDs})
+    }
+    else{
+        const userID = user._id
+        await Post.updateOne({_id: post._id}, {likerIDs: {...post.likerIDs, [userID]: new Date()}})
+    }
+    return res.status(200).send("Completed.")
 })
 export default postRouter;

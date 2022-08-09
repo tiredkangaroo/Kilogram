@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/static/css/main.a97602d6.css",
+    "main.js": "/static/js/main.9b42f2fe.js",
+    "static/media/Noe-Text-Regular.ttf": "/static/media/Noe-Text-Regular.58fa6f64450e17d97435.ttf",
+    "static/media/Noe-Text-Bold.ttf": "/static/media/Noe-Text-Bold.464b50aa8a5830c5067a.ttf",
+    "index.html": "/index.html",
+    "main.a97602d6.css.map": "/static/css/main.a97602d6.css.map",
+    "main.9b42f2fe.js.map": "/static/js/main.9b42f2fe.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.a97602d6.css",
+    "static/js/main.9b42f2fe.js"
+  ]
+}

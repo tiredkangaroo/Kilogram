@@ -1,7 +1,7 @@
 import axios from "axios";
 import PostRenderer from "./PostRenderer.jsx";
 import { useState, useRef } from "react";
-
+import { FiPlus } from "react-icons/fi";
 const Home = ({user}) => {
     setTimeout(() => {}, 900)
     const [posts, setPosts] = useState(null);
@@ -39,7 +39,7 @@ const Home = ({user}) => {
         return (
             <div className="authenticated-home">
                 <br/>
-                <a href="/new"><button className="home-newpost-button">New Post</button></a>
+                <a href="/new"><button className="home-newpost-button"><FiPlus className="home-newpost-newicon"/><p>New Post</p></button></a>
                 <div className="posts">
                     {posts.map((element) => {
                         return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>

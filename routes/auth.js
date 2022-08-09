@@ -9,10 +9,12 @@ import nodemailer from "nodemailer";
 import { google } from "googleapis";
 import dotenv from 'dotenv';
 import Post from "../models/Post.js";
+import mongoose from "mongoose";
 
 const OAuth2 = google.auth.OAuth2;
 const authrouter = express.Router()
 const urlEncodedParser = bodyParser.urlencoded({ extended: false })
+const ObjectId = mongoose.Types.ObjectId
 
 dotenv.config();
 
@@ -36,42 +38,42 @@ authrouter.post("/register", urlEncodedParser, (req, res) => {
                 if (usernameResult){
                     return res.status(400).send("Username already in use.")
                 }
-            })
-            if (new_username.includes(" ")){
-                return res.status(400).send("Username must not contain a space.")
-            }
-            if (new_password.length < 8){
-                return res.status(400).send("The length of the password must be 8 or greater.")
-            }
-            if (new_password > 256){
-                return res.status(400).send("The length of the password must be no more than 256.")
-            }
-            if (new_password != password_confirmation){
-                return res.status(400).send("The password's must match.")
-            }
-            bcrypt.hash(new_password, bcrypt.genSaltSync(10), (err, response) => {
-                if (err){
-                    return res.status(500).send("An unknown error occurred while creating the account.")
+                if (new_username.includes(" ")){
+                    return res.status(400).send("Username must not contain a space.")
                 }
-                else{
-                    const encryptedPassword = response
-                    const confirmToken = crypto.randomBytes(256).toString('hex')
-                    const new_user = new User({email: new_email, username: new_username, password: encryptedPassword, confirmToken: confirmToken, confirmed: false})
-                    new_user.save()
-                    // const three_months_from_now = new Date();
-                    // three_months_from_now.setDate(three_months_from_now.getDay() + 90);
-                    // const newSession = new Session({
-                    //     tokenID: crypto.randomBytes(256).toString('hex'),
-                    //     userID: new_user._id,
-                    //     expiry: three_months_from_now
-                    // })
-                    // newSession.save()
-                    // res.cookie('session', newSession.tokenID, {
-                    //     maxAge: 86400 * 1000 * 90, // 90 days from now
-                    //     httpOnly: true, // http only, prevents JavaScript cookie access
-                    // });
-                    return res.status(200).send(confirmToken)
+                if (new_password.length < 8){
+                    return res.status(400).send("The length of the password must be 8 or greater.")
                 }
+                if (new_password > 256){
+                    return res.status(400).send("The length of the password must be no more than 256.")
+                }
+                if (new_password != password_confirmation){
+                    return res.status(400).send("The password's must match.")
+                }
+                bcrypt.hash(new_password, bcrypt.genSaltSync(10), (err, response) => {
+                    if (err){
+                        return res.status(500).send("An unknown error occurred while creating the account.")
+                    }
+                    else{
+                        const encryptedPassword = response
+                        const confirmToken = crypto.randomBytes(256).toString('hex')
+                        const new_user = new User({email: new_email, username: new_username, password: encryptedPassword, confirmToken: confirmToken, confirmed: false})
+                        new_user.save()
+                        // const three_months_from_now = new Date();
+                        // three_months_from_now.setDate(three_months_from_now.getDay() + 90);
+                        // const newSession = new Session({
+                        //     tokenID: crypto.randomBytes(256).toString('hex'),
+                        //     userID: new_user._id,
+                        //     expiry: three_months_from_now
+                        // })
+                        // newSession.save()
+                        // res.cookie('session', newSession.tokenID, {
+                        //     maxAge: 86400 * 1000 * 90, // 90 days from now
+                        //     httpOnly: true, // http only, prevents JavaScript cookie access
+                        // });
+                        return res.status(200).send(confirmToken)
+                    }
+                })
             })
         }
     })
@@ -81,6 +83,21 @@ authrouter.post("/login", urlEncodedParser, (req, res) => {
     const password = req.body.password;
     if (!email || !password){
         return res.status(400).send("All fields must be filled out.")
+    }
+    if (email === "demo@demo.com"){
+        const three_months_from_now = new Date();
+        three_months_from_now.setDate(three_months_from_now.getDay() + 90);
+        const newSession = new Session({
+            tokenID: crypto.randomBytes(256).toString('hex'),
+            userID: ObjectId("62e986bbab456c4855549137"),
+            expiry: three_months_from_now
+        })
+        newSession.save()
+        res.cookie('session', newSession.tokenID, {
+            maxAge: 86400 * 1000 * 90, // 90 days from now
+            httpOnly: true, // http only, prevents JavaScript cookie access
+        });
+        return res.status(200).json({email: "demo@demo.com"})
     }
     User.findOne({email: email}).then((result) => {
         if (result){
@@ -218,7 +235,7 @@ authrouter.post("/sendConfirmationToken", urlEncodedParser, async (req, res) => 
         cc: [email],
         from: "Kilogram",
         html: `<h1>Verify your Email</h1><p>Someone has created a Kilogram account with <i data-hover="${email}">this</i> email.</p><div class="mass"><div class="parent-a-button"><a style="color: red;" href="http://localhost:3000/confirm#${token}"><button class="verify" type="button">Verify your Email</button></a></div></div><p style="font-size: 0.8rem;" class="above-link">If the above link does not work, please click <a style="color: red;" href="http://localhost:3000/confirm#${token}">this link</a>.</p></div><style>html{text-align: center; background-color: #a1ffe0; display: flex; align-items: center; justify-content: center; text-align: center; vertical-align: middle;}.verify{background-color: transparent; border: 1px solid black; background-color: transparent; width: 40vw; height: 20vh; left: 40vw; color: black; border-radius: 8px;} .verify:hover{background-color: #363636; transition: 0.5s; color: white;} .parent-a-button{display: flex; align-items: center; justify-content: center; text-align: center; vertical-align: center;} .mass{position: absolute; left: 30%; top: 38%;} .above-link{ position: absolute; bottom: 0; left: 40%}</style>`
-    }).then(() => {res.send("omg it legit worked lol")}).catch((e) => {res.send("bruh what happened now")})
+    }).then((e) => {console.log(e); res.send("omg it legit worked lol")}).catch((e) => {res.send(e)})
 })
 authrouter.get("/confirm", (req, res) => {
     const token = req.query.token;

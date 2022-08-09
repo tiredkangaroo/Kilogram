@@ -9,10 +9,10 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    // title: {
-    //     type: String,
-    //     required: true
-    // },
+    title: {
+        type: String,
+        required: true
+    },
     markdownText: {
         type: String,
         required: true
@@ -21,11 +21,12 @@ const PostSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    likerIDs: { //array of userIDs that have liked this post
-        type: Array,
+    likerIDs: { //Object of id and time {'jb2h52n', ISODate("2022-08-01T19:24:42.308Z")}
+        type: Object,
+        minimize: false,
         required: false
     },
-    comments: { //2d array of [[userid, comment_text], [userid, comment_text]]
+    comments: { //2d array of [[userid, comment_text, time], [userid, comment_text, time]]
         type: Array,
         required: false
     }

@@ -2,35 +2,55 @@
 html {
   --home-nocreds-authbuttons-padding: 22px;
   --home-nocreds-authbuttons-width: 100%;
-  --website-theme: #82ffa8; 
-  --postrenderer-confirm-modal-buttons-gap: 1rem;
-  --postrender-confirm-modal-buttons-size: 3rem;
+  --website-theme: #ce92ff; 
+  --postrenderer-confirm-modal-buttons-gap: 3rem;
+  --postrender-confirm-modal-buttons-size: 18rem;
   --postrenderer-confirm-modal-bordersize: 0.25rem;
   overflow-x: hidden;
+  padding: 0;
+  margin: 0;
 }
-.heading-nav {
-  background-color: var(--website-theme);
+@font-face {
+  font-family: 'Noe';
+  src: url("../../storage/Noe-Text-Regular.ttf") format('truetype');
+}
+@font-face {
+  font-family: 'Noe-Bold';
+  src: url("../../storage/Noe-Text-Bold.ttf") format('truetype');
+}
+body{
+  padding: 0;
   position: absolute;
   width: 100%;
   top: 0;
-  left: 0;
-  height: 50px;
-  line-height: 50px;
-  padding-left: 8px;
+  margin: 0;
+}
+.heading-nav {
+  background-color: var(--website-theme);
+  border-bottom: 1px solid black;
+  opacity: 1;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  height: 40px;
+  line-height: 40px;
+  padding-left: 5px;
   display: flex;
-  vertical-align: middle; }
-
-.heading-nav > img {
-  position: absolute;
-  top: 20px;
-  bottom: 0; }
-
+}
+.branding-parent{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  width: 88%;
+}
 .heading-nav > .username {
   position: absolute;
-  top: 0px;
+  top: -5px;
   line-height: 16px;
   right: 5.5rem;
-  font-size: 1.1rem; }
+  font-size: 1.1rem; 
+}
 
 .heading-nav > a {
   color: black;
@@ -47,8 +67,15 @@ html {
   top: 0;
   right: 5.2rem; }
 
-.divider {
-  padding-top: 32px; }
+.heading-nav-branding{
+    display: flex;
+    justify-content: center;
+    text-align: center;
+    align-items: center;
+  }
+
+/* .divider {
+  padding-top: 32px; } */
 
 .register-errorDisplay {
   display: none; }
@@ -119,13 +146,14 @@ html {
   height: 4rem;
   border: 5px solid #000;
   position: absolute;
-  left: 48%;
-  top: 48%;
+  top: 48vh;
+  left: 48vw;
   border-bottom-color: transparent;
   border-radius: 50%;
-  display: inline-block;
+  display: flex;
   box-sizing: border-box;
-  animation: rotation 1s linear infinite; }
+  animation: rotation 1s linear infinite; 
+}
 
 
 .uncompleted-loading-checkinternet {
@@ -144,12 +172,23 @@ html {
   border: 1px solid black;
   width: 50vw;
   height: 80vh;
-  overflow-y: auto;
   margin: auto;
-  text-align: center;
+  /* text-align: center; */
   color: black;
   z-index: 1;
-  overflow-x: hidden;
+  overflow: hidden;
+}
+.post-body{
+  overflow-y: scroll;
+  border-top: 0.03rem solid black;
+  border-bottom: 0.03rem solid black;
+  height: 60vh;
+  font-family: 'Noe';
+  line-height: 190%;
+  margin-left: 0.8rem;
+  margin-right: 0.7rem;
+  margin-bottom: 0px;
+  text-align: left;
 }
 .post>a{
   text-decoration: none;
@@ -160,10 +199,21 @@ html {
   width: 100%;
   height: 250px;
 }
+.post>h1{
+  font-family: 'Noe-Bold';
+  text-align: center;
+}
+.post-body>h1, .post-body>h2, .post-body>h3, .post-body>h4{
+  text-align: center;
+}
+.post-username{
+  text-align: center;
+}
 .postrenderer-management-buttons{
   display: flex;
   justify-content: center;
   align-items: center;
+  gap: 0.2rem;
 }
 .postrenderer-confirm-modal-parent{
   display: flex;
@@ -176,34 +226,48 @@ html {
   justify-content: center;
   align-items: center;
   margin: auto;
-  border: var(--postrenderer-confirm-modal-bordersize) solid red;
   background-color: white;
   z-index: 2;
-  padding: 0.5rem 0.5rem 0.5rem 0.5rem;
+  padding: 0.5rem 1rem 0.5rem 1rem;
   vertical-align: middle;
   top: calc(40% - 0.5rem);
-  /* transform: translate(0%, 40%); */
   text-align: center;
+  border-radius: 5px;
+  cursor: default;
+}
+.postrenderer-confirm-modal>div{
+  width: 100%;
+  text-align: right;
+  height: 1.5rem;
+}
+.postrenderer-confirm-modal>div>svg{
+  width: 2rem;
+  height: 2rem;
+  cursor: pointer;
 }
 .postrenderer-confirm-modal-button-yes{
   margin-right: var(--postrenderer-confirm-modal-buttons-gap);
   width: var(--postrenderer-confirm-modal-button-size);
   height: var(--postrenderer-confirm-modal-button-size);
+  cursor: pointer;
 }
 .postrenderer-confirm-modal-button-no{
   margin-left: var(--postrenderer-confirm-modal-buttons-gap);
   width: var(--postrenderer-confirm-modal-buttons-size);
   height: var(--postrenderer-confirm-modal-buttons-size);
+  cursor: pointer;
 }
 .authenticated-home{
   text-align: center;
 }
 .newpost-markdown-textarea{
-  width: 48%;
-  height: calc(100vh - 50px - 2rem - 2rem);
+  width: calc(48%);
+  /* height: calc(100vh - 50px - 2rem - 2rem); */
+  min-height: calc(100vh - 50px - 2rem - 2rem);
+  max-height: max-content;
   resize: none;
   outline: none;
-  margin-top: 1rem;
+  font-family: 'Noe';
 }
 .newPost-window{
   display: flex;
@@ -211,11 +275,13 @@ html {
 }
 .newPost-window>p{
   width: calc(100vw - 1rem - 0.67rem - 48%);
-  word-break: break-all;
+  word-break: break-word;
+  margin-right: 1rem;
+  font-family: 'Noe';
+  margin-top: -1rem;
   /* text-align: left; */
 }
-.newPost-window-parent{
-  margin-top: 1.2rem;
+.newPost-window>p>h1{
   text-align: center;
 }
 .newPost-error{
@@ -254,4 +320,62 @@ html {
 }
 .email-url, .post-url{
   color: black;
+}
+.newPost-window-button-parent{
+  text-align: center;
+}
+.newPost-window-title{
+  width: 46%;
+  height: 1rem;
+  resize: none;
+}
+.post-hearts{
+  display: flex;
+  justify-content: center;
+  vertical-align: middle;
+  margin-top: -1rem;
+  align-items: center;
+  height: 10vh;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}
+.heart{
+  height: 0%;
+  width: 2rem;
+  display: inline-block;
+}
+.heart:hover{
+  cursor: pointer;
+}
+.heart>span{
+  font-size: 1.4rem;
+  margin-left: 0.3rem;
+  cursor: default;
+  top: 0%;
+}
+.home-newpost-newicon, .home-newpost-button>p{
+  vertical-align: middle;
+}
+.home-newpost-button>p{
+  display: inline-block;
+  margin-left: 8px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+  padding-left: 0.9rem;
+  padding-right: 0.9rem;
+}
+button{
+  background-color: var(--website-theme);
+  outline: none;
+  border: none;
+  padding: 0.4rem 0.8rem 0.4rem 0.8rem;
+}
+button:hover{
+  cursor: pointer;
+}
+.postrenderer-large{
+  width: 95vw;
+  height: 90vh;
+  transition: 1s;
 }
