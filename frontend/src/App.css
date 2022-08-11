@@ -32,6 +32,7 @@ body{
   position: -webkit-sticky;
   position: sticky;
   top: 0;
+  width: 100vw;
   height: 40px;
   line-height: 40px;
   padding-left: 5px;
@@ -260,8 +261,8 @@ html {
 .authenticated-home{
   text-align: center;
 }
-.newpost-markdown-textarea{
-  width: calc(48%);
+.editor-textarea{
+  width: 96%;
   /* height: calc(100vh - 50px - 2rem - 2rem); */
   min-height: calc(100vh - 50px - 2rem - 2rem);
   max-height: max-content;
@@ -269,11 +270,11 @@ html {
   outline: none;
   font-family: 'Noe';
 }
-.newPost-window{
+.editor-window{
   display: flex;
   gap: 0.67rem;
 }
-.newPost-window>p{
+.editor-window>p{
   width: calc(100vw - 1rem - 0.67rem - 48%);
   word-break: break-word;
   margin-right: 1rem;
@@ -281,10 +282,10 @@ html {
   margin-top: -1rem;
   /* text-align: left; */
 }
-.newPost-window>p>h1{
+.editor-window>p>h1{
   text-align: center;
 }
-.newPost-error{
+.editor-error{
   display: none;
 }
 .confirmEmail-prompt-parent{
@@ -377,5 +378,42 @@ button:hover{
 .postrenderer-large{
   width: 95vw;
   height: 90vh;
-  transition: 1s;
+}
+.post-body>p>img{
+  max-width:100%;
+max-height:100%;
+object-fit: contain;
+}
+.go-to-home{
+  font-size: 32px;
+  width: 50px;
+  color: #000;
+}
+.editor-file{
+  position: absolute;
+  opacity: 0;
+  width: 90%;
+  height: 8rem;
+}
+.editor-file-wrapper{
+  background-color: #ce92ff;
+  width: 90%;
+  height: 8rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+  margin-left: 5.5ch;
+  margin-bottom: 3ch;
+  border-radius: 2px;
+}
+.heading-nav-center{
+  text-align: center;
+}
+.logout{
+  position: absolute;
+  right: 1rem;
+}
+.post{
+  text-align: center;
 }

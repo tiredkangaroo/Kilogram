@@ -1,7 +1,8 @@
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 const Navbar = ({user}) => {
     const navbarRef = useRef();
+    const [width, setWidth] = useState(window.innerWidth);
     const ATag = () => {
         if (user.isAnonymous){
             return (
@@ -28,13 +29,41 @@ const Navbar = ({user}) => {
             navbarRef.current.style.opacity = "1";
         }
     })
-    return (
-        <nav className="heading-nav" ref={navbarRef}>
-            <a href="/"><img alt="Kilogram Logo" src="/storage/favicon.ico" width="80" height="40"></img></a>
-            <div className="branding-parent"><h1 className="heading-nav-branding">Kilogram</h1></div>
-            <p className="username"><b>{Username()}</b></p>
-            <ATag />
-        </nav>
-    )
+    window.addEventListener("resize", () => {setWidth(window.innerWidth)})
+    const ATagOrUsername = () => {
+        if (user.isAnonymous){
+            return (
+                <>
+                    <Link className="register" to="/register">Register</Link>
+                    <Link className="login-logout" to="/login">Login</Link>
+                </>
+            )
+        }
+        else{
+            return (
+                <>
+                    <b title="View profile."><Username /></b>
+                    <Link className="logout" to="/logout">Logout</Link>
+                </>
+            )
+        }
+    }
+    if (width >= 562){
+        return (
+            <nav className="heading-nav" ref={navbarRef}>
+                <a href="/"><img alt="Kilogram Logo" src="/storage/favicon.ico" width="80" height="40"></img></a>
+                <div className="branding-parent"><h1 className="heading-nav-branding">Kilogram</h1></div>
+                <p className="username"><b>{Username()}</b></p>
+                <ATag />
+            </nav>
+        )
+    }
+    else{
+        return (
+            <nav className="heading-nav heading-nav-center" ref={navbarRef}>
+                <ATagOrUsername />
+            </nav>
+        )
+    }
 }
 export default Navbar;

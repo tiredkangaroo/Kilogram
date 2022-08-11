@@ -21,9 +21,12 @@ app.use("/", authrouter)
 mongoose.connect(process.env.MONGODB_URI)
 
 app.use(express.static('frontend/build'));
-app.get('*', (req, res) => {
-  res.sendFile(path.resolve('frontend', 'build', 'index.html'));
-})
+
+if (process.env.NODE_ENV == "production"){
+  app.get('*', (req, res) => {
+    res.sendFile(path.resolve('frontend', 'build', 'index.html'));
+  })
+}
 
 app.listen(process.env.PORT || 8000, "0.0.0.0", () => {
     console.log("Server is running.")
