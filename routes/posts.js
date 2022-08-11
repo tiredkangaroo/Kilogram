@@ -4,8 +4,29 @@ import Post from "../models/Post.js";
 import loggedIn from "./loginRequired.js";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
+import multer from 'multer';
+import crypto from "crypto";
 
 const urlEncodedParser = bodyParser.urlencoded({ extended: true })
+const FILE_TYPE_MAP = {
+    // mime type
+    "image/png": "png",
+    "image/jpeg": "jpeg",
+    "image/jpg": "jpg",
+};
+const storage = multer.diskStorage({
+    destination : (req, file, cb) => {
+        cb(null,'storage/');
+    },
+    filename : (req,file,cb) => {
+        file.newName = crypto.randomBytes(32).toString("hex") + "." + FILE_TYPE_MAP[file.mimetype]
+        cb(null, file.newName)
+    }
+  })
+  
+
+const upload = multer({ storage:storage })
+
 const postRouter = express.Router()
 const ObjectId = mongoose.Types.ObjectId
 
@@ -38,22 +59,35 @@ const markdownTextEmojis = (md) => {
     }
     return md;
 }
-postRouter.post("/newpost", urlEncodedParser, async (req, res) => {
+postRouter.post("/newpost", upload.single("image"), async (req, res) => {
     const isLoggedIn = await loggedIn(req);
     if (!isLoggedIn[0]){return res.status(403).send("User must be logged in to create a post.")}; //if the user is not logged in
-    const title = req.body.title;
-    if (!title) { return res.status(400).send("Missing paramaters.")}
-    let markdownText = req.body.markdownText;
-    if (!markdownText) {return res.status(400).send("Missing paramaters.")};
-    if (markdownText.length > 150304) {return res.status(400).send("Limit for the post is 150,304 characters.")}
+    let text = req.body.text;
+    if (text){
+        if (text.length > 150304) {
+            return res.status(400).send("Limit for the post is 150,304 characters.")
+        }
+        text = markdownTextEmojis(text)
+    }
     const authorID = isLoggedIn[1].userID; //userSession
     const author = await User.findOne({_id: ObjectId(authorID)})
     if (!author) { return res.status(404).send("User associated with session does not exist.") }
     const current_date = new Date();
     const likerIDs = []
     const comments = []
-    markdownText = markdownTextEmojis(markdownText)
-    const newPost = new Post({authorUsername: author.username, authorID: authorID, title: title, markdownText: markdownText, date_created: current_date, likerIDs: likerIDs, comments: comments});
+    const newPost = new Post({
+        authorUsername: author.username, 
+        authorID: authorID, 
+        date_created: current_date, 
+        likerIDs: likerIDs, 
+        comments: comments
+    });
+    if (text){
+        newPost.text = text;
+    }
+    if (req.file){
+        newPost.imageKey = req.file.newName;
+    }
     await newPost.save()
     return res.status(200).json(newPost._id)
 })

@@ -1,45 +1,20 @@
-import {marked} from 'marked';
-import DOMPurify from 'dompurify';
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import axios from 'axios';
+import Editor from './Editor';
 
 const NewPost = ({user}) => {
-    const [markdown, setMarkdown] = useState("");
-    const markdownRef = useRef();
     const errorRef = useRef();
-    const titleRef = useRef();
-    const markdownTextEmojis = (md) => {
-        const wrappingSymbol = ":" //: wraps the key, so :grin: will translate it into the grin
-        const map = {
-            "grin": "😃",
-            "cry": "😢",
-            "sob": "😭",
-            "happycry": "🥲",
-            "sunglasses": "😎",
-            "party": "🎉",
-            "ghost": "👻",
-            "skull": "💀",
-            "laughing": "😂",
-            "rofl": "🤣",
-            "beg": "🙏",
-            "fire": "🔥",
-            "sus": "😳"
-        }
-        for (let i = 0; i < Object.keys(map).length; i++){
-            let re = new RegExp(wrappingSymbol + Object.keys(map)[i] + wrappingSymbol, "g")
-            md = md.replace(re, Object.values(map)[i])
-        }
-        return md;
-    }
-    const markdownChange = (e) => {
-        setMarkdown("# " + titleRef.current.value + "\n" + markdownTextEmojis(e.target.value));
-    }
-    const handleNewPost = async () => {
-        const params = new URLSearchParams();
-        params.append("title", titleRef.current.value)
-        params.append("markdownText", markdownRef.current.value)
+    const handleNewPost = async (fileRef, markdownRef) => {
+        const params = new FormData();
         try{
-            const result = await axios.post("/posts/newpost", params, {withCredentials: true})
+            params.append("image", fileRef.current.files[0])
+        }
+        catch (e){
+            console.log(e);
+        }
+        params.append("text", markdownRef.current.value)
+        try{
+            const result = await axios.post("/posts/newpost", params, {withCredentials: true, headers: {"Content-Type": "multipart/form-data"}})
             if (result.status === 200){
                 window.location.href = `/post#${result.data}`
             }
@@ -68,16 +43,7 @@ const NewPost = ({user}) => {
     }
     else {
         return (
-            <div className="newPost-window-parent">
-                <p ref={errorRef} className="newPost-error"></p>
-                <p className="newPost-window-title-parent">Title: &nbsp; <textarea className="newPost-window-title" ref={titleRef} autoFocus={true} type="text" placeholder='Insert title here.'/></p>
-                <div className="newPost-window">
-                    Text:
-                    <textarea required={true} ref={markdownRef} maxLength={150304} onChange={markdownChange} className="newpost-markdown-textarea"></textarea>
-                    <p dangerouslySetInnerHTML={{__html: DOMPurify.sanitize(marked.parse(markdown))}}></p>
-                </div>
-                <p align="center"><button onClick={handleNewPost}>Create</button></p>
-            </div>
+            <Editor user={user} handle={handleNewPost} />
         )
     }
 }

@@ -9,13 +9,13 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    title: {
+    imageKey: {
         type: String,
-        required: true
+        required: false, 
     },
-    markdownText: {
+    text: {
         type: String,
-        required: true
+        required: false
     },
     date_created: {
         type: Date,

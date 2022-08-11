@@ -43,7 +43,7 @@ const PostRenderer = ({user, post, hideURL}) => {
     const managementButtons = () => {
         if (user.id === post.authorID){
             return (
-                <p className="postrenderer-management-buttons"><button onClick={(e) => {e.stopPropagation(); window.location.href = `/edit#${post.id}`}} title="Edit" className="postrenderer-management-button">Edit</button>&nbsp;<button onClick={deletePostModalOpen} title="Delete" className="postrenderer-management-button">Delete</button></p>
+                <p className="postrenderer-management-buttons"><button onClick={(e) => {e.stopPropagation(); window.location.href = `/edit#${post._id}`}} title="Edit" className="postrenderer-management-button">Edit</button>&nbsp;<button onClick={deletePostModalOpen} title="Delete" className="postrenderer-management-button">Delete</button></p>
             )
         }
     }
@@ -65,7 +65,18 @@ const PostRenderer = ({user, post, hideURL}) => {
             window.location.href = `/post#${post._id}`
         }
     }
-    const markdown = () => ({__html: DOMPurify.sanitize(marked.parse(post.markdownText).replace("<h1>", "<h1><hr>"))})
+    const image = (e) => {
+        if (e.target.width > window.innerWidth/2){
+            e.target.width = window.innerWidth/2
+        }
+    }
+    const renderImage = () => {
+        if (post.imageKey){
+            return (<img onLoad={image} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
+        }
+    }
+    console.log(post)
+    const markdown = () => ({__html: DOMPurify.sanitize(marked.parse(post.text).replace("<h1>", "<h1><hr>"))})
     if (mount){
         return(
             <div ref={postrendererParentRef} onClick={linkToPost}>
@@ -80,7 +91,7 @@ const PostRenderer = ({user, post, hideURL}) => {
                     <p className="post-username">{post.authorUsername}</p>
                     {managementButtons()}
                     <hr></hr>
-                    <h1>{post.title}</h1>
+                    {renderImage()}
                     <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>
                     <Heart user={user} post={post}/>
                 </div>

@@ -1,5 +1,6 @@
 import { Route, Routes, useLocation } from "react-router-dom";
 import { useState, useEffect } from 'react';
+import { MdArrowBack } from "react-icons/md";
 import axios from 'axios';
 import './App.css';
 import Home from "./components/Home.jsx";
@@ -38,7 +39,7 @@ const App = () => {
   }, [])
   const HomeLink = () => {
     if (!(location.pathname === "/")){
-      return <a href="/" className="go-to-home">Go to Home</a>
+      return <a href="/" className="go-to-home"><MdArrowBack /></a>
     }
   }
   return (
