@@ -5,13 +5,14 @@ import DOMPurify from 'dompurify';
 import Heart from './Heart';
 import { GrFormClose } from "react-icons/gr";
 
-const PostRenderer = ({user, post, hideURL}) => {
+const PostRenderer = ({user, post, hideURL, setLoader}) => {
     window.post = post;
     const [mount, setMount] = useState(true);
     const modalRef = useRef();
     const yesRef = useRef();
     const postrendererParentRef = useRef();
     const postRef = useRef();
+    const imageRef = useRef();
     const nullA = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -40,7 +41,7 @@ const PostRenderer = ({user, post, hideURL}) => {
         document.getElementsByTagName("html")[0].style.overflowY = "auto";
         modalRef.current.style.display = "none";
     }
-    const managementButtons = () => {
+    const ManagementButtons = () => {
         if (user.id === post.authorID){
             return (
                 <p className="postrenderer-management-buttons"><button onClick={(e) => {e.stopPropagation(); window.location.href = `/edit#${post._id}`}} title="Edit" className="postrenderer-management-button">Edit</button>&nbsp;<button onClick={deletePostModalOpen} title="Delete" className="postrenderer-management-button">Delete</button></p>
@@ -66,17 +67,25 @@ const PostRenderer = ({user, post, hideURL}) => {
         }
     }
     const image = (e) => {
-        if (e.target.width > window.innerWidth/2){
-            e.target.width = window.innerWidth/2
-        }
+        e.target.width = window.innerWidth/2.1
     }
-    const renderImage = () => {
+    window.addEventListener("resize", () => {
+        if (post.imageKey && imageRef.current){
+            image({"target": {"width": imageRef.current.width}});
+        }
+    })
+    const RenderImage = () => {
         if (post.imageKey){
-            return (<img onLoad={image} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
+            return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
         }
     }
-    console.log(post)
-    const markdown = () => ({__html: DOMPurify.sanitize(marked.parse(post.text).replace("<h1>", "<h1><hr>"))})
+    let markdown;
+    if (post.text){
+        markdown = () => ({__html: DOMPurify.sanitize(marked.parse(post.text))})
+    }
+    else{
+        markdown = () => ({__html: ""})
+    }
     if (mount){
         return(
             <div ref={postrendererParentRef} onClick={linkToPost}>
@@ -89,9 +98,8 @@ const PostRenderer = ({user, post, hideURL}) => {
                 </div>
                 <div ref={postRef} className="post">
                     <p className="post-username">{post.authorUsername}</p>
-                    {managementButtons()}
-                    <hr></hr>
-                    {renderImage()}
+                    <ManagementButtons />
+                    <RenderImage />
                     <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>
                     <Heart user={user} post={post}/>
                 </div>

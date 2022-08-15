@@ -177,19 +177,13 @@ html {
   /* text-align: center; */
   color: black;
   z-index: 1;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 .post-body{
-  overflow-y: scroll;
-  border-top: 0.03rem solid black;
-  border-bottom: 0.03rem solid black;
-  height: 60vh;
+  overflow-y: auto;
   font-family: 'Noe';
-  line-height: 190%;
-  margin-left: 0.8rem;
-  margin-right: 0.7rem;
-  margin-bottom: 0px;
-  text-align: left;
+  line-height: 0%;
+  text-align: center;
 }
 .post>a{
   text-decoration: none;
@@ -334,12 +328,11 @@ html {
   display: flex;
   justify-content: center;
   vertical-align: middle;
-  margin-top: -1rem;
   align-items: center;
-  height: 10vh;
   position: -webkit-sticky;
   position: sticky;
-  top: 0;
+  height: 1rem;
+  margin-top: -1rem;
 }
 .heart{
   height: 0%;
@@ -416,4 +409,8 @@ object-fit: contain;
 }
 .post{
   text-align: center;
+}
+.post-img{
+  max-height: 55vh;
+  object-fit: contain;
 }
