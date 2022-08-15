@@ -1,16 +1,16 @@
 import axios from "axios";
 import PostRenderer from "./PostRenderer.jsx";
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
 const Home = ({user}) => {
     setTimeout(() => {}, 900)
     const [posts, setPosts] = useState(null);
     const [loaded, setLoaded] = useState(false)
     const spinnerRef = useRef();
-    useState(() => {
+    useEffect(() => {
         axios.get("/posts/all").then((result) => {
             setPosts(result.data)
-            setLoaded(true)
+            setLoaded(true);
         })
     }, [])
     if (user.isAnonymous && user.completedLoading){
@@ -42,7 +42,7 @@ const Home = ({user}) => {
                 <a href="/new"><button className="home-newpost-button"><FiPlus className="home-newpost-newicon"/><p>New Post</p></button></a>
                 <div className="posts">
                     {posts.map((element) => {
-                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>
+                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} setLoader={setLoaded} /></div>
                     })}
                 </div>
             </div>

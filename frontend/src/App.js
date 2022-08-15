@@ -1,4 +1,4 @@
-import { Route, Routes, useLocation } from "react-router-dom";
+import { Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import { MdArrowBack } from "react-icons/md";
 import axios from 'axios';
@@ -42,6 +42,9 @@ const App = () => {
       return <a href="/" className="go-to-home"><MdArrowBack /></a>
     }
   }
+  const Protected = ({Element, props}) => (
+    user.completedLoading ? user.isAnonymous ? <Navigate to="/login" replace/> : <Element {...props}/> : <Outlet />
+  )
   return (
     <div className="App">
       <div className="divider"></div>
@@ -51,14 +54,14 @@ const App = () => {
         <Routes>
           <Route path="/" element={<Home user={user} />} />
           <Route path="/login" element={<Login user={user} />} />
-          <Route path="/logout" element={<Logout />}></Route>
+          <Route path="/logout" element={<Protected Element={Logout} />} />
           <Route path="/register" element={<Register />} />
           <Route path="/confirm" element={<Confirm />} />
           <Route path="/post" element={<Post user={user} />} />
-          <Route path="/new" element={<NewPost user={user} />} />
+          <Route path="/new" element={<Protected Element={NewPost} props={{user: user}} />} />
           <Route path="/confirmEmail" element={<ConfirmEmail />} />
           <Route path="/profile" element={<Profile user={user} />} />
-          <Route path="/edit" element={<Edit />} />
+          <Route path="/edit" element={<Protected Element={Edit} />} />
         </Routes>
       </div>
     </div>
