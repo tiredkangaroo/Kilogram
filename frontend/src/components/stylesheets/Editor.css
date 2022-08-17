@@ -1,0 +1,27 @@
+.editor-textarea{
+  width: 96%;
+  /* height: calc(100vh - 50px - 2rem - 2rem); */
+  min-height: calc(100vh - 50px - 2rem - 2rem);
+  max-height: max-content;
+  resize: none;
+  outline: none;
+  font-family: 'Noe';
+}
+.editor-window{
+  display: flex;
+  gap: 0.67rem;
+}
+.editor-window>p{
+  width: calc(100vw - 1rem - 0.67rem - 48%);
+  word-break: break-word;
+  margin-right: 1rem;
+  font-family: 'Noe';
+  margin-top: -1rem;
+  /* text-align: left; */
+}
+.editor-window>p>h1{
+  text-align: center;
+}
+.editor-error{
+  display: none;
+}

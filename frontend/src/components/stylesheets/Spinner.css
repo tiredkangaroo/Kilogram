@@ -1,0 +1,26 @@
+@keyframes rotation {
+  0% {
+    transform: rotate(0deg); 
+  }
+  100% {
+    transform: rotate(365deg);
+    color: #1e1e1e; 
+  } 
+}
+.uncompleted-loading {
+  width: 4rem;
+  height: 4rem;
+  border: 5px solid #000;
+  position: absolute;
+  top: 48vh;
+  left: 48vw;
+  border-bottom-color: transparent;
+  border-radius: 50%;
+  display: flex;
+  box-sizing: border-box;
+  animation: rotation 1s linear infinite; 
+}
+.uncompleted-loading-checkinternet {
+  text-align: center;
+  padding-top: calc(48vh + 5rem); 
+}

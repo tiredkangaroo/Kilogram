@@ -1,0 +1,49 @@
+.home-nocreds {
+  display: block;
+  justify-content: center;
+  align-items: center;
+  text-align: center; 
+}
+
+.home-nocreds-title {
+  text-align: center;
+  font-size: 4.5rem;
+  font-family: 'MuseoModerno', sans-serif; 
+}
+
+.home-nocreds-begforcreds {
+  font-size: 0.9rem;
+  text-align: center; 
+}
+
+.home-nocreds-authbuttons {
+  display: inline-grid;
+  grid-template-columns: repeat(auto-fit, minmax(350px, 60vw));
+  grid-gap: 3rem;
+  padding-top: 3rem;
+  vertical-align: middle; 
+}
+
+.home-nocreds-authbuttons > a > button {
+  width: var(--home-nocreds-authbuttons-width);
+  padding-top: var(--home-nocreds-authbuttons-padding);
+  padding-bottom: var(--home-nocreds-authbuttons-padding);
+  border: none;
+  cursor: pointer;
+  font-size: calc(var(--home-nocreds-authbuttons-width) * 2);
+  font-family: 'MuseoModerno';
+  background-color: var(--website-theme); 
+}
+
+.home-nocreds-authbutton > a {
+  text-decoration: none;
+  color: black; 
+}
+
+.home-nocreds-login {
+  float: block-start; 
+}
+
+.home-nocreds-signup {
+  float: block-end; 
+}

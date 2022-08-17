@@ -2,6 +2,7 @@ import axios from "axios";
 import PostRenderer from "./PostRenderer.jsx";
 import { useState, useRef, useEffect } from "react";
 import { FiPlus } from "react-icons/fi";
+import "./stylesheets/NoAuthHome.css"
 const Home = ({user}) => {
     setTimeout(() => {}, 900)
     const [posts, setPosts] = useState(null);
