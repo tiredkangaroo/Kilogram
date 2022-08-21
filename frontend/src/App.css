@@ -2,7 +2,8 @@
 html {
   --home-nocreds-authbuttons-padding: 22px;
   --home-nocreds-authbuttons-width: 100%;
-  --website-theme: #ce92ff; 
+  --website-theme: #f09433 0%,#e6683c 25%,#dc2743 50%,#cc2366 75%,#bc1888 100%; 
+  --website-theme-gradient-deg: 225deg;
   --postrenderer-confirm-modal-buttons-gap: 3rem;
   --postrender-confirm-modal-buttons-size: 18rem;
   --postrenderer-confirm-modal-bordersize: 0.25rem;
@@ -34,7 +35,7 @@ html {
 }
   
 .heading-nav {
-  background-color: var(--website-theme);
+  background: linear-gradient(var(--website-theme-gradient-deg), var(--website-theme));
   border-bottom: 1px solid black;
   opacity: 1;
   position: -webkit-sticky;
@@ -155,8 +156,8 @@ html {
   cursor: pointer;
 }
 .heart>span{
-  font-size: 1.4rem;
-  margin-left: 0.3rem;
+  font-size: 1.3rem;
+  margin-left: 4px;
   cursor: default;
   top: 0%;
 }
@@ -172,7 +173,7 @@ html {
   padding-right: 0.9rem;
 }
 button{
-  background-color: var(--website-theme);
+  background: linear-gradient(var(--website-theme-gradient-deg), var(--website-theme));
   outline: none;
   border: none;
   padding: 0.4rem 0.8rem 0.4rem 0.8rem;
@@ -224,6 +225,7 @@ object-fit: contain;
 }
 .post-img{
   flex-grow: 1;
+  max-height: 50vh;
   object-fit:contain;
 }
 .editor-firstline{

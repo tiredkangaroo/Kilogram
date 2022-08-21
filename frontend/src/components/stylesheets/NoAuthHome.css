@@ -32,7 +32,7 @@
   cursor: pointer;
   font-size: calc(var(--home-nocreds-authbuttons-width) * 2);
   font-family: 'MuseoModerno';
-  background-color: var(--website-theme); 
+  background: linear-gradient(var(--website-theme-gradient-deg), var(--website-theme)); 
 }
 
 .home-nocreds-authbutton > a {

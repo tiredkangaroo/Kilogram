@@ -6,7 +6,7 @@
 .post{
   border: 1px solid black;
   width: 50vw;
-  height: 80vh;
+  height: max-content;
   margin-top: 1rem;
   color: black;
   z-index: 1;
@@ -44,15 +44,19 @@
   gap: 0.2rem;
 }
 .postrenderer-confirm-modal-parent{
-  display: none;
-}
-.postrenderer-confirm-modal{
   display: flex;
-  justify-content: center;
-  align-items: center;
   position: fixed;
   justify-content: center;
   align-items: center;
+  width: 100vw;
+  z-index: 2;
+}
+.postrenderer-confirm-modal{
+  display: none;
+  position: fixed;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
   background-color: white;
   z-index: 2;
   padding: 0.5rem 1rem 0.5rem 1rem;
@@ -83,4 +87,7 @@
   width: var(--postrenderer-confirm-modal-buttons-size);
   height: var(--postrenderer-confirm-modal-buttons-size);
   cursor: pointer;
+}
+.post-img{
+  width: calc(100vw / 2.1);
 }

@@ -6,11 +6,11 @@ import "./stylesheets/NoAuthHome.css"
 const Home = ({user}) => {
     setTimeout(() => {}, 900)
     const [posts, setPosts] = useState(null);
-    const [loaded, setLoaded] = useState(false)
+    const [loaded, setLoaded] = useState(false);
     const spinnerRef = useRef();
     useEffect(() => {
         axios.get("/posts/all").then((result) => {
-            setPosts(result.data)
+            setPosts(result.data);
             setLoaded(true);
         })
     }, [])
@@ -43,7 +43,7 @@ const Home = ({user}) => {
                 <a href="/new"><button className="home-newpost-button"><FiPlus className="home-newpost-newicon"/><p>New Post</p></button></a>
                 <div className="posts">
                     {posts.map((element) => {
-                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} setLoader={setLoaded} /></div>
+                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>
                     })}
                 </div>
             </div>

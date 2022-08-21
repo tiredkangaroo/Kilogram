@@ -5,7 +5,7 @@ import DOMPurify from 'dompurify';
 import Heart from './Heart';
 import { GrFormClose } from "react-icons/gr";
 import "./stylesheets/Post.css";
-const PostRenderer = ({user, post, hideURL, setLoader}) => {
+const PostRenderer = ({user, post, hideURL}) => {
     window.post = post;
     const [mount, setMount] = useState(true);
     const modalRef = useRef();
@@ -26,7 +26,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
         if (deletePost){
             setMount(false)
         }
-        deletePostModalClose();
+        deletePostModalClose(e);
     }
     const deletePostModalOpen = (e) => {
         e.stopPropagation();
@@ -109,7 +109,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
         window.location.href = "/"
     }
     else{
-        return <hidden></hidden>;
+        return <></>;
     }
 }
 export default PostRenderer;

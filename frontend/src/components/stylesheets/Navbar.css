@@ -1,13 +1,15 @@
 .heading-nav > a {
   color: black;
   text-decoration: none; 
+  padding: 0em;
 }
 
 .heading-nav > .login-logout {
   position: absolute;
   right: 12px;
   top: 0px;
-  padding-right: 5px; }
+  padding-right: 5px; 
+}
 
 .heading-nav > .register {
   position: absolute;
