@@ -1,15 +1,16 @@
 {
   "files": {
-    "main.css": "/static/css/main.80789c90.css",
-    "main.js": "/static/js/main.cea88676.js",
+    "main.css": "/static/css/main.31402f5d.css",
+    "main.js": "/static/js/main.1d6a3acc.js",
     "static/media/Noe-Text-Regular.ttf": "/static/media/Noe-Text-Regular.58fa6f64450e17d97435.ttf",
+    "static/media/billabong.ttf": "/static/media/billabong.44fbfcc7d51154c38587.ttf",
     "static/media/Noe-Text-Bold.ttf": "/static/media/Noe-Text-Bold.464b50aa8a5830c5067a.ttf",
     "index.html": "/index.html",
-    "main.80789c90.css.map": "/static/css/main.80789c90.css.map",
-    "main.cea88676.js.map": "/static/js/main.cea88676.js.map"
+    "main.31402f5d.css.map": "/static/css/main.31402f5d.css.map",
+    "main.1d6a3acc.js.map": "/static/js/main.1d6a3acc.js.map"
   },
   "entrypoints": [
-    "static/css/main.80789c90.css",
-    "static/js/main.cea88676.js"
+    "static/css/main.31402f5d.css",
+    "static/js/main.1d6a3acc.js"
   ]
 }
