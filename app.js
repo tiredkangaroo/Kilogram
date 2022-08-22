@@ -1,8 +1,11 @@
 import express from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+
 import authrouter from './routes/auth.js';
 import postsRouter from "./routes/posts.js";
+import commentsRouter from './routes/comments.js';
+
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import path from 'path';
@@ -16,7 +19,8 @@ app.use("/storage", express.static("storage"))
 app.use(express.json({limit: '0.151mb'}));
 app.use(express.urlencoded({limit: '0.151mb', extended: true}));
 app.use(cookieParser())
-app.use("/posts", postsRouter)
+app.use("/posts", postsRouter);
+app.use("/comments", commentsRouter);
 app.use("/", authrouter)
 mongoose.connect(process.env.MONGODB_URI)
 

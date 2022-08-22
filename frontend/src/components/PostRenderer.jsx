@@ -4,8 +4,8 @@ import { useState, useRef, useEffect } from 'react';
 import DOMPurify from 'dompurify';
 import Heart from './Heart';
 import { GrFormClose } from "react-icons/gr";
-
-const PostRenderer = ({user, post, hideURL, setLoader}) => {
+import "./stylesheets/Post.css";
+const PostRenderer = ({user, post, hideURL}) => {
     window.post = post;
     const [mount, setMount] = useState(true);
     const modalRef = useRef();
@@ -26,7 +26,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
         if (deletePost){
             setMount(false)
         }
-        deletePostModalClose();
+        deletePostModalClose(e);
     }
     const deletePostModalOpen = (e) => {
         e.stopPropagation();
@@ -52,7 +52,6 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
         if (postrendererParentRef.current){
             if (!hideURL){
                 postrendererParentRef.current.style.cursor = "pointer";
-                postrendererParentRef.current.title = "View post."
             }
         }
     }, [postrendererParentRef, hideURL])
@@ -69,11 +68,11 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
     const image = (e) => {
         e.target.width = window.innerWidth/2.1
     }
-    window.addEventListener("resize", () => {
-        if (post.imageKey && imageRef.current){
-            image({"target": {"width": imageRef.current.width}});
-        }
-    })
+    // window.addEventListener("resize", () => {
+    //     if (post.imageKey && imageRef.current){
+    //         imageRef.current.width = window.innerWidth/2.1
+    //     }
+    // })
     const RenderImage = () => {
         if (post.imageKey){
             return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
@@ -88,7 +87,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
     }
     if (mount){
         return(
-            <div ref={postrendererParentRef} onClick={linkToPost}>
+            <div className="post-parent" ref={postrendererParentRef} onClick={linkToPost}>
                 <div className="postrenderer-confirm-modal-parent" onClick={nullA}>
                     <div ref={modalRef} className="postrenderer-confirm-modal">
                             <div><GrFormClose onClick={deletePostModalClose} /></div>
@@ -101,7 +100,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
                     <ManagementButtons />
                     <RenderImage />
                     <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>
-                    <Heart user={user} post={post}/>
+                    <div className="post-hearts-parent"><Heart user={user} post={post}/></div>
                 </div>
             </div>
         )
@@ -110,7 +109,7 @@ const PostRenderer = ({user, post, hideURL, setLoader}) => {
         window.location.href = "/"
     }
     else{
-        return;
+        return <></>;
     }
 }
 export default PostRenderer;

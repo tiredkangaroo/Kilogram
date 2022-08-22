@@ -26,7 +26,8 @@ const PostSchema = new mongoose.Schema({
         minimize: false,
         required: false
     },
-    comments: { //2d array of [[userid, comment_text, time], [userid, comment_text, time]]
+    comments: { //Array of objects that have the userid, comment_text, and the time.
+        // [{userID: 'jb2h52n', text: "yo that's fire", date: ISODate("2022-08-20T22:19:02.269Z")}] 
         type: Array,
         required: false
     }
