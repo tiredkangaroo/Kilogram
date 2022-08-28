@@ -7,6 +7,7 @@ import mongoose from "mongoose";
 import imageDownloader from "image-downloader";
 import path from "path";
 import fs from "fs";
+import fetch from "node-fetch";
 
 dotenv.config();
 const protectedFiles = ["billabong.ttf", "favicon.ico", "Noe-Text-Bold.ttf", "Noe-Text-Regular.ttf"]
