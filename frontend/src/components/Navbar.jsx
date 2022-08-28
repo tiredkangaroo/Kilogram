@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
-import { FaInstagram } from 'react-icons/fa';
-import "./stylesheets/Navbar.css"
+import "./stylesheets/Navbar.css";
+import { NavbarDropdownElements } from "./data/NavbarDropdownElements";
 const Navbar = ({user}) => {
     const navbarRef = useRef();
     const [width, setWidth] = useState(window.innerWidth);
@@ -19,8 +19,18 @@ const Navbar = ({user}) => {
         }
     }
     const Username = () => {
+        console.log(user)
         if (!user.isAnonymous){
-            return <a className="navbar-username" href={`/profile#@${user.username}`}>{user.username}</a>;
+            return (
+              <div className="dropdown">
+                <a className="navbar-username" href={`/profile#@${user.username}`}>{user.username}</a>
+                <div className="dropdown-content">
+                  {Object.keys(NavbarDropdownElements).map((ele) => {
+                    return <p key={ele}><a href={NavbarDropdownElements[ele]}>{ele}</a></p>
+                  })}
+                </div>
+              </div>
+            )
         }
     }
 //     window.addEventListener("scroll", (e) => {
@@ -53,9 +63,9 @@ const Navbar = ({user}) => {
     if (width >= 562){
         return (
             <nav className="heading-nav" ref={navbarRef}>
-                <div className="branding-logo-parent"><a href="/"><FaInstagram className="branding-logo"/></a></div>
+                <div className="branding-logo-parent"><img className="branding-logo" alt="Kilogram Logo" src="/storage/favicon.ico"/></div>
                 <div className="branding-parent"><h1 className="heading-nav-branding">Kilogram</h1></div>
-                <p className="username"><b>{Username()}</b></p>
+                <div className="username"><b>{Username()}</b></div>
                 <ATag />
             </nav>
         )

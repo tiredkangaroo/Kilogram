@@ -11,7 +11,7 @@ const Heart = ({user, post}) => {
         }
     }, [post.likerIDs, user.id])
     const SelectHeart = () => (
-        hearted ? (<FaHeart title="Remove heart." />) : (<FaRegHeart title="Add heart." />)
+        hearted ? (<FaHeart />) : (<FaRegHeart />)
     )
     const toggleHeart = async (e) => {
         e.stopPropagation();

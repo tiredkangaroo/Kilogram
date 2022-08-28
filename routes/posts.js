@@ -36,10 +36,8 @@ const ObjectId = mongoose.Types.ObjectId
 class Routes {
   async newPost(req, res){
     let text = req.body.text;
-    if (text){
-        if (text.length > 150304) {
-            return res.status(400).send("Limit for the post is 150,304 characters.")
-        }
+    if (text.length > 150304) {
+        return res.status(400).send("Limit for the post is 150,304 characters.")
     }
     const author = req.user
     const authorID = author._id;
@@ -51,17 +49,10 @@ class Routes {
         authorID: authorID, 
         date_created: current_date, 
         likerIDs: likerIDs, 
-        comments: comments
+        comments: comments,
+        text: text,
+        imageKey: req.file.newName
     });
-    if (text){
-        newPost.text = text;
-    }
-    if (req.file){
-        newPost.imageKey = req.file.newName;
-    }
-    if (!text && !req.file){
-      return noAuthMessage(res);
-    }
     await newPost.save()
     return res.status(200).json(newPost._id)
   }
@@ -124,7 +115,7 @@ const Router = new Routes();
 const postRouter = express.Router()
 
 postRouter.get("/all", async (req, res) => {Route(req, res, Router.all)});
-postRouter.post("/newpost", upload.single("image"), (req, res) => {ProtectedRoute(req, res, Router.newPost)})
+postRouter.post("/newpost", upload.single("image"), (req, res) => {ProtectedRoute(req, res, Router.newPost, ["file"])})
 postRouter.get("/post", urlEncodedParser, async (req, res) => {Route(req, res, Router.post, ["id"])})
 postRouter.post("/delete", urlEncodedParser, async (req, res) => {ProtectedRoute(req, res, Router.delete)})
 postRouter.post("/heart", urlEncodedParser, async (req, res) => {ProtectedRoute(req, res, Router.heart)})

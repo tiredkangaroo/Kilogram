@@ -13,6 +13,7 @@ const PostRenderer = ({user, post, hideURL}) => {
     const postrendererParentRef = useRef();
     const postRef = useRef();
     const imageRef = useRef();
+    const postBodyRef = useRef();
     const nullA = (e) => {
         e.stopPropagation();
         e.preventDefault();
@@ -56,10 +57,11 @@ const PostRenderer = ({user, post, hideURL}) => {
         }
     }, [postrendererParentRef, hideURL])
     useEffect(() => {
-        if (postRef.current && hideURL){
-            postRef.current.classList.add("postrenderer-large");
-        }
-    }, [postRef, hideURL])
+      if (postBodyRef.current && !hideURL && postBodyRef.current.innerText.length > 150){
+        postBodyRef.current.innerText = postBodyRef.current.innerText.substr(0, 165) + "..."
+      }
+      //eslint-disable-next-line
+    }, [postBodyRef.current, hideURL])
     const linkToPost = (e) => {
         if (!hideURL){
             window.location.href = `/post#${post._id}`
@@ -68,11 +70,25 @@ const PostRenderer = ({user, post, hideURL}) => {
     const image = (e) => {
         e.target.width = window.innerWidth/2.1
     }
-    // window.addEventListener("resize", () => {
-    //     if (post.imageKey && imageRef.current){
-    //         imageRef.current.width = window.innerWidth/2.1
-    //     }
-    // })
+    const postResizer = () => {
+      const posts = document.getElementsByClassName("post")
+        if (window.innerWidth < 693){
+          for (let i = 0; i < posts.length; i++){
+            posts[0].style.width = "88vw";
+          }
+        }
+        else{
+          for (let i = 0; i < posts.length; i++){
+            posts[0].style.width = "50vw";
+          }
+        }
+    }
+    window.addEventListener("resize", () => {
+        if (post.imageKey && imageRef.current){
+            imageRef.current.width = window.innerWidth/2.1
+        }
+        postResizer();
+    })
     const RenderImage = () => {
         if (post.imageKey){
             return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
@@ -95,11 +111,11 @@ const PostRenderer = ({user, post, hideURL}) => {
                             <p><button ref={yesRef} onClick={deletePost}>Yes</button>&nbsp;<button onClick={deletePostModalClose}>No</button></p>
                     </div>
                 </div>
-                <div ref={postRef} className="post">
+                <div ref={postRef} onLoad={postResizer} className="post">
                     <p className="post-username">{post.authorUsername}</p>
                     <ManagementButtons />
                     <RenderImage />
-                    <p dangerouslySetInnerHTML={markdown()} className="post-body"></p>
+                    <p dangerouslySetInnerHTML={markdown()} ref={postBodyRef} className="post-body"></p>
                     <div className="post-hearts-parent"><Heart user={user} post={post}/></div>
                 </div>
             </div>

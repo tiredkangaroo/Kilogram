@@ -26,6 +26,7 @@ const NewPost = ({user}) => {
         catch (e) {
             errorRef.current.innerText = e.response.data;
             errorRef.current.style.display = "inline-block";
+            window.scroll(0, 0);
         }
     }
     if (!user.completedLoading){
@@ -43,7 +44,10 @@ const NewPost = ({user}) => {
     }
     else {
         return (
-            <Editor user={user} handle={handleNewPost} />
+            <>
+              <div className="editor-error-parent"><p className="editor-error" ref={errorRef}></p></div>
+              <Editor user={user} handle={handleNewPost} />
+            </>
         )
     }
 }

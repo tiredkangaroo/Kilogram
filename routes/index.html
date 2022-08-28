@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    
+    html, body{
+      background: linear-gradient(to right, #6fdeda, #e375e4);
+      background-size: 200% 200%;
+      animation: gradient 8s ease infinite;
+    }
+    @keyframes gradient {
+      0% {
+        background-position: 0% 50%;
+      }
+      50% {
+        background-position: 100% 50%;
+      }
+      100% {
+        background-position: 0% 50%;
+      }
+    }
+
+    h1{
+      text-align: center;
+    }
+    p{
+      white-space: pre-wrap;
+    }
+    table {
+      font-family: arial, sans-serif;
+      border-collapse: collapse;
+      width: 100%;
+    }
+    td, th {
+      border: 1px solid #1e1e1e;
+      padding: calc((1/2) * 1rem);
+      text-align: center;
+      word-break: break-word;
+      max-width: 36ch;
+      width: max-content;
+      height: max-content;
+    }
+    tr{
+      height: max-content;
+    }
+
+  </style>
+</head>
+<body>
+  <script>
+    const keys = Object.keys(window.data)
+    function expand(e){
+      // let chunks = [];
+      // let cut = 32;
+      // str = e.target.id;
+      // for (let n = 0, charsLength = str.length; n < charsLength; n += cut) {
+      //     chunks.push(str.substring(n, n + cut));
+      // }
+      // e.target.innerText = chunks.join("\n");
+      e.target.innerText = e.target.id;
+    }
+    for (i = 0; i < keys.length; i++){
+      let title = document.createElement("h1");
+      title.innerText = keys[i].substring(0, 1).toLocaleUpperCase() + keys[i].substr(1);
+      document.body.appendChild(title);
+      current = window.data[keys[i]];
+      let newTable = document.createElement("table");
+      let thetr = document.createElement("tr");
+      //Line 74 will throw an error if the collection is empty
+      for (let i = 0; i < Object.keys(current[0]).length; i++){
+        let theth = document.createElement("th");
+        theth.innerText = Object.keys(current[0])[i]
+        thetr.appendChild(theth)
+      }
+      newTable.appendChild(thetr)
+      for (let i = 0; i < current.length; i++){
+        let thetr = document.createElement("tr");
+        //Line 83 will throw an error if the an instance of the collection has nothing
+        for (let s = 0; s < Object.keys(current[i]).length; s++){
+          let theth = document.createElement("td");
+          let value = (Object.values(current[i])[s]).toString();
+          if (value.length > 32){
+            theth.id = value;
+            theth.onclick = expand;
+            value = value.substring(0, 32) + "...";
+          }
+          theth.innerText = value;
+          thetr.appendChild(theth)
+        }
+        newTable.appendChild(thetr);
+      }
+      document.body.appendChild(newTable)
+    }
+  </script>
+</body>
+</html>

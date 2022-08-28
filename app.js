@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authrouter from './routes/auth.js';
 import postsRouter from "./routes/posts.js";
 import commentsRouter from './routes/comments.js';
+import DatabaseDeveloperRouter from "./routes/DatabaseDeveloperRouter.js";
 
 import cookieParser from 'cookie-parser';
 import cors from 'cors';
@@ -30,6 +31,9 @@ if (process.env.NODE_ENV == "production"){
   app.get('*', (req, res) => {
     res.sendFile(path.resolve('frontend', 'build', 'index.html'));
   })
+}
+else{
+  app.use("/db", DatabaseDeveloperRouter);
 }
 
 app.listen(process.env.PORT || 8000, "0.0.0.0", () => {

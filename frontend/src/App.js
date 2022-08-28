@@ -1,6 +1,5 @@
 import { Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from 'react';
-import { MdArrowBack } from "react-icons/md";
 import axios from 'axios';
 import './App.css';
 import Home from "./components/Home.jsx";
@@ -21,36 +20,29 @@ Array.prototype.remove = function (value){
   })
 }
 const App = () => {
-  const [user, setUser] = useState({isAnonymous: true, completedLoading: false})
+  const [user, setUser] = useState({isAnonymous: true, completedLoading: false});
   const location = useLocation();
-  window.user = user
-  const loadingSpinnerTime = 10;
+  window.user = user;
   useEffect(() => {
-    axios.get("/whoami", {withCredentials: true}).then( (res) => {
-      if (res.status === 200) {
-        setTimeout(() => {setUser({id: res.data.id, email: res.data.email, username: res.data.username, isAnonymous: false, completedLoading: true})}, loadingSpinnerTime);
-      }
-      else{
-        setTimeout(() => {setUser({isAnonymous: true, completedLoading: true})}, loadingSpinnerTime)
-      }
-    } ).catch((e) => {
-        setTimeout(() => {setUser({isAnonymous: true, completedLoading: true})}, loadingSpinnerTime);
-    })
-  }, [])
-  const HomeLink = () => {
-    if (!(location.pathname === "/")){
-      return <a href="/" className="go-to-home"><MdArrowBack /></a>
+    let protectedRoutes = ["", "logout", "new", "edit"];
+    if (protectedRoutes.includes(location.pathname.substring(1))){
+      axios.get("/whoami", {withCredentials: true}).then((res) => {
+        if (res.status === 200) {
+          setUser({id: res.data.id, email: res.data.email, username: res.data.username, isAnonymous: false, completedLoading: true});
+        }
+        else{
+         setUser({isAnonymous: true, completedLoading: true})
+        }
+      }).catch(() => {setUser({isAnonymous: true, completedLoading: true})})
     }
-  }
+  }, [location.pathname, user.isAnonymous])
   const Protected = ({Element, props}) => (
     user.completedLoading ? user.isAnonymous ? <Navigate to="/login" replace/> : <Element {...props}/> : <Outlet />
   )
   return (
     <div className="App">
-      <div className="divider"></div>
       <Navbar user={user} />
-      <div className="route-container">
-        <HomeLink />
+      <>
         <Routes>
           <Route path="/" element={<Home user={user} />} />
           <Route path="/login" element={<Login user={user} />} />
@@ -63,7 +55,7 @@ const App = () => {
           <Route path="/profile" element={<Profile user={user} />} />
           <Route path="/edit" element={<Protected Element={Edit} />} />
         </Routes>
-      </div>
+      </>
     </div>
   );
 }

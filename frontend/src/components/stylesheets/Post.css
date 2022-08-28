@@ -4,13 +4,14 @@
   flex-grow: 1;
 }
 .post{
-  border: 1px solid black;
   width: 50vw;
   height: max-content;
+  border: 1px solid black;
   margin-top: 1rem;
   color: black;
   z-index: 1;
   overflow-x: hidden;
+  background-color: white;
 }
 .post-body{
   overflow-y: auto;
@@ -90,4 +91,7 @@
 }
 .post-img{
   width: calc(100vw / 2.1);
+}
+.post-parent, .post, .post-body, .post-link{
+  text-decoration: dotted;
 }

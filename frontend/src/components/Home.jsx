@@ -1,7 +1,6 @@
 import axios from "axios";
 import PostRenderer from "./PostRenderer.jsx";
 import { useState, useRef, useEffect } from "react";
-import { FiPlus } from "react-icons/fi";
 import "./stylesheets/NoAuthHome.css"
 const Home = ({user}) => {
     setTimeout(() => {}, 900)
@@ -39,8 +38,6 @@ const Home = ({user}) => {
     else{
         return (
             <div className="authenticated-home">
-                <br/>
-                <a href="/new"><button className="home-newpost-button"><FiPlus className="home-newpost-newicon"/><p>New Post</p></button></a>
                 <div className="posts">
                     {posts.map((element) => {
                         return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>

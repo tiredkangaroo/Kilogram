@@ -24,6 +24,7 @@ function Editor(props){
     }
     return (
         <div className="editor-window-parent">
+            <br/>
             <div className="editor-firstline">
                 <div className="editor-file-wrapper" ref={wrapperRef}>
                     <ButtonName />

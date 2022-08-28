@@ -11,14 +11,15 @@ function requiredEngine() {
 
 export function required() {
   const req = arguments['0']
-  const params = Object.values(arguments).slice(1)
+  let params = Object.values(arguments).slice(1)
   if (params.length <= 0){
     return true;
   }
-  if (req.method == "GET"){
-    return requiredEngine(req.query, ...params)
+  if (params[0] == "file" && !req.file){
+    return false;
   }
-  else if (req.method == "POST"){
-    return requiredEngine(req.body, ...params)
+  if (params[0] == "file"){
+    params = Object.values(arguments).slice(2)
   }
+  return requiredEngine(req.method == "GET" ? req.query : req.body, ...params)
 }

@@ -10,14 +10,16 @@ const Login = ({user}) => {
         e.preventDefault();
         const params = new URLSearchParams();
         params.append("email", emailRef.current.value);
-        params.append("password", passwordRef.current.value)
+        params.append("password", passwordRef.current.value);
         axios.post("/login", params, {withCredentials: true}).then((res) => {
-            if (res.status === 200 || res.status === 304){
-                window.location.href = "/"
-            }
-            errorRef.current.innerText = e.response.data;
+          if (res.status === 200 || res.status === 304){
+              window.location.href = "/"
+          }
+          else{
+            errorRef.current.innerText = e.data;
+          }
         }).catch((e) => {
-            errorRef.current.innerText = e.response.data;
+          errorRef.current.innerText = e.response.data;
         })
     }
     const handleDemo = (e) => {
