@@ -59,3 +59,4 @@ const SetupDemoUser = async () => {
 }
 await SetupDemoUser();
 console.log("Set up demo user.")
+process.exit();

@@ -103,3 +103,4 @@ const SetupDemoUser = async () => {
 await SetupDemoUser();
 console.log("Set up demo user.")
 console.log("Seeding process successful.")
+process.exit();
