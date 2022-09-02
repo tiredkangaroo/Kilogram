@@ -1,7 +1,7 @@
 import express from 'express';
 import Post from "../models/Post.js";
 import { Route } from "../utils/route.js";
-import { noAuthMessage, ProtectedRoute } from "../utils/loginRequired.js";
+import { ProtectedRoute } from "../utils/loginRequired.js";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 import multer from 'multer';

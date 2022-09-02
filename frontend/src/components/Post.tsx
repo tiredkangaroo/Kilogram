@@ -1,11 +1,12 @@
 import axios from 'axios';
-import { useEffect, useState } from 'react';
-import PostRenderer from "./PostRenderer.jsx"
-import Comments from './Comments.jsx';
-const Post = ({user}) => {
-    const [post, setPost] = useState(null);
-    useEffect(() => {
-        if (!window.location.hash.length > 1){window.location.href = "/"};
+import * as React from 'react';
+import PostRenderer from "./PostRenderer"
+import Comments from './Comments';
+import UserDataInterface from './data/interfaces/UserDataInterface';
+const Post = (user: UserDataInterface) => {
+    const [post, setPost] = React.useState(null);
+    React.useEffect(() => {
+        if (!(window.location.hash.length > 1)){window.location.href = "/"};
         axios.get(`/posts/post?id=${window.location.hash.split("#")[1]}`).then((result) => {
             setPost(result.data);
         }).catch((e) => {

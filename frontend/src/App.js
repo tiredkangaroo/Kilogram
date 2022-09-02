@@ -2,17 +2,17 @@ import { Route, Routes, useLocation, Navigate, Outlet } from "react-router-dom";
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import './App.css';
-import Home from "./components/Home.jsx";
-import Login from "./components/Login.jsx";
-import Logout from "./components/Logout.jsx";
-import Register from "./components/Register.jsx";
-import Confirm from "./components/Confirm.jsx";
-import Navbar from './components/Navbar.jsx';
-import Post from "./components/Post.jsx";
-import NewPost from "./components/NewPost.jsx";
-import ConfirmEmail from "./components/ConfirmEmail.jsx"
-import Profile from "./components/Profile.jsx";
-import Edit from "./components/Edit.jsx";
+import Home from "./components/Home.tsx";
+import Login from "./components/Login.tsx";
+import Logout from "./components/Logout.tsx";
+import Register from "./components/Register.tsx";
+import Confirm from "./components/Confirm.tsx";
+import Navbar from './components/Navbar.tsx';
+import Post from "./components/Post.tsx";
+import NewPost from "./components/NewPost.tsx";
+import ConfirmEmail from "./components/ConfirmEmail.tsx"
+import Profile from "./components/Profile.tsx";
+import Edit from "./components/Edit.tsx";
 //eslint-disable-next-line
 Array.prototype.remove = function (value){
   return this.filter(function (ele){
@@ -24,17 +24,14 @@ const App = () => {
   const location = useLocation();
   window.user = user;
   useEffect(() => {
-    let protectedRoutes = ["", "logout", "new", "edit"];
-    if (protectedRoutes.includes(location.pathname.substring(1))){
-      axios.get("/whoami", {withCredentials: true}).then((res) => {
-        if (res.status === 200) {
-          setUser({id: res.data.id, email: res.data.email, username: res.data.username, isAnonymous: false, completedLoading: true});
-        }
-        else{
-         setUser({isAnonymous: true, completedLoading: true})
-        }
-      }).catch(() => {setUser({isAnonymous: true, completedLoading: true})})
-    }
+    axios.get("/whoami", {withCredentials: true}).then((res) => {
+      if (res.status === 200) {
+        setUser({id: res.data.id, email: res.data.email, username: res.data.username, isAnonymous: false, completedLoading: true});
+      }
+      else{
+        setUser({isAnonymous: true, completedLoading: true})
+      }
+    }).catch(() => {setUser({isAnonymous: true, completedLoading: true})})
   }, [location.pathname, user.isAnonymous])
   const Protected = ({Element, props}) => (
     user.completedLoading ? user.isAnonymous ? <Navigate to="/login" replace/> : <Element {...props}/> : <Outlet />

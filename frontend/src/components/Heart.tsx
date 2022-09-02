@@ -1,19 +1,25 @@
 import { FaRegHeart, FaHeart } from "react-icons/fa";
 import { useEffect, useState } from "react";
 import axios from "axios";
-const Heart = ({user, post}) => {
+import UserDataInterface from "./data/interfaces/UserDataInterface";
+import PostDataInterface from "./data/interfaces/PostDataInterface";
+interface HeartDataInterface {
+  user: UserDataInterface,
+  post: PostDataInterface
+}
+const Heart = ({user, post}: HeartDataInterface) => {
     const [hearted, setHearted] = useState(false);
     const [counter, setCounter] = useState(0);
     useEffect(() => {
         if (post.likerIDs){
-            setHearted(Object.keys(post.likerIDs).includes(user.id))
+            setHearted(Object.keys(post.likerIDs).includes(user._id))
             setCounter(Object.keys(post.likerIDs).length)
         }
-    }, [post.likerIDs, user.id])
+    }, [post.likerIDs, user._id])
     const SelectHeart = () => (
         hearted ? (<FaHeart />) : (<FaRegHeart />)
     )
-    const toggleHeart = async (e) => {
+    const toggleHeart = async (e: any) => {
         e.stopPropagation();
         e.preventDefault();
         const params = new URLSearchParams();

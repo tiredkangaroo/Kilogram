@@ -1,35 +1,36 @@
 import axios from "axios";
-import { useRef } from "react";
+import React, { useRef } from "react";
+React;
 const Register = () => {
-    const emailRef = useRef();
-    const usernameRef = useRef();
-    const passwordRef = useRef();
-    const passwordConfirmRef = useRef();
-    const errorDisplayRef = useRef();
+    const emailRef = useRef<HTMLInputElement>(null);
+    const usernameRef = useRef<HTMLInputElement>(null);
+    const passwordRef = useRef<HTMLInputElement>(null);
+    const passwordConfirmRef = useRef<HTMLInputElement>(null);
+    const errorDisplayRef = useRef<HTMLParagraphElement>(null);
 
-    const handleSubmit = (e) => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const params = new URLSearchParams();
-        params.append("email", emailRef.current.value);
-        params.append("username", usernameRef.current.value)
-        params.append("password", passwordRef.current.value);
-        params.append("password_confirmation", passwordConfirmRef.current.value);
+        params.append("email", emailRef.current!.value);
+        params.append("username", usernameRef.current!.value)
+        params.append("password", passwordRef.current!.value);
+        params.append("password_confirmation", passwordConfirmRef.current!.value);
         axios.post("/register", params, {withCredentials: true}).then(async (response) => {
             if (response.status === 200){
                 const confirmParams = new URLSearchParams();
-                confirmParams.append("email", emailRef.current.value)
+                confirmParams.append("email", emailRef.current!.value)
                 confirmParams.append("token", response.data)
                 await axios.post("/sendConfirmationToken", confirmParams)
                 window.location.href = "/confirmEmail"
             }
             else {
-                errorDisplayRef.current.innerText = response.data;
-                errorDisplayRef.current.style.display = "inline-block";
+                errorDisplayRef.current!.innerText = response.data;
+                errorDisplayRef.current!.style.display = "inline-block";
             }
         }).catch((e) => {
             console.log(e)
-            errorDisplayRef.current.innerText = e.response.data
-            errorDisplayRef.current.style.display = "inline-block";
+            errorDisplayRef.current!.innerText = e.response.data
+            errorDisplayRef.current!.style.display = "inline-block";
         })
     }
     return (

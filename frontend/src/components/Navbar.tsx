@@ -2,8 +2,9 @@ import { useRef, useState } from "react";
 import { Link } from "react-router-dom";
 import "./stylesheets/Navbar.css";
 import { NavbarDropdownElements } from "./data/NavbarDropdownElements";
-const Navbar = ({user}) => {
-    const navbarRef = useRef();
+import UserDataInterface from "./data/interfaces/UserDataInterface";
+const Navbar = ({user}: {user: UserDataInterface}) => {
+    const navbarRef = useRef(null);
     const [width, setWidth] = useState(window.innerWidth);
     const ATag = () => {
         if (user.isAnonymous){
@@ -31,6 +32,9 @@ const Navbar = ({user}) => {
                 </div>
               </div>
             )
+        }
+        else {
+          return <></>
         }
     }
 //     window.addEventListener("scroll", (e) => {

@@ -1,12 +1,13 @@
 import axios from "axios";
-import PostRenderer from "./PostRenderer.jsx";
+import PostRenderer from "./PostRenderer";
 import { useState, useRef, useEffect } from "react";
-import "./stylesheets/NoAuthHome.css"
-const Home = ({user}) => {
+import "./stylesheets/NoAuthHome.css";
+import UserDataInterface from "./data/interfaces/UserDataInterface";
+const Home = ({user}: {user: UserDataInterface}) => {
     setTimeout(() => {}, 900)
-    const [posts, setPosts] = useState(null);
+    const [posts, setPosts] = useState<any>(null);
     const [loaded, setLoaded] = useState(false);
-    const spinnerRef = useRef();
+    const spinnerRef = useRef<HTMLSpanElement>(null);
     useEffect(() => {
         axios.get("/posts/all").then((result) => {
             setPosts(result.data);
@@ -39,8 +40,8 @@ const Home = ({user}) => {
         return (
             <div className="authenticated-home">
                 <div className="posts">
-                    {posts.map((element) => {
-                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} /></div>
+                    {posts!.map((element: any) => {
+                        return <div key={element._id} className="post-parent"><br/><PostRenderer user={user} post={element} hideURL={false} /></div>
                     })}
                 </div>
             </div>

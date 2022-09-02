@@ -1,23 +1,27 @@
 import { useState } from "react";
-
-import Comment from "./Comment.jsx";
-import NewCommentEditor from "./NewCommentEditor.jsx";
+import Comment from "./Comment";
+import NewCommentEditor from "./NewCommentEditor";
 import "./stylesheets/Comments.css";
+import PostDataInterface from "./data/interfaces/PostDataInterface";
 
-export default function Comments ({post}) {
+interface CommentsPostDataInterface {
+  post: PostDataInterface
+}
+const Comments = ({post}: CommentsPostDataInterface) =>  {
+
   const [comments, setComments] = useState(post.comments.map(ele => <Comment key={Math.random() * 50} data={ele} />))
+  const handleNewComment = (newCommentRef:HTMLTextAreaElement) => {
+    setComments(post.comments.map(ele => <Comment key={Math.random() * 50} data={ele} />));
+  } 
   if (comments.length === 0){
     return (
       <>
-        <NewCommentEditor/>
+        <NewCommentEditor handle={handleNewComment} />
         <div className="comments">
           <h3>Be the first to write a comment.</h3>
         </div>
       </>
     )
-  }
-  const handleNewComment = (newCommentRef) => {
-    setComments(...comments, <Comment key={Math.random() * 50} data={{username: window.user.username, userID: window.user._id, text: newCommentRef.current.value, date: new Date()}} />);
   }
   return (
     <>
@@ -28,3 +32,4 @@ export default function Comments ({post}) {
     </>
   )
 }
+export default Comments

@@ -49,10 +49,10 @@ await DeleteAll();
 console.log("Deleted all data in the database.")
 
 console.log("Setting up seed user.")
+const usernames = ["emergency_pocket", "crew_declare", "deposit_paramedic", "friendlyequal", "prickly_dog", "the_best_programmer"]
+const username = usernames[Math.floor(Math.random() * 6)];
 const SetupUser = async () => {
-  const usernames = ["emergency_pocket", "crew_declare", "deposit_paramedic", "friendlyequal", "prickly_dog", "the_best_programmer"]
   const email = "seeder@seeds.com";
-  const username = usernames[Math.floor(Math.random() * 6)];
   const password = crypto.randomBytes(256).toString("hex"); //This account should not be accessible by ANYONE.
   const confirmToken = crypto.randomBytes(256).toString("hex") //The confirm token on /confirm can be used as a way into the account. This should remain inacessable.
   const confirmed = true;
@@ -84,7 +84,7 @@ const SetupPosts = async () => {
     const key = crypto.randomBytes(32).toString("hex");
     const quote = await getQuote();
     await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/${key}.jpg`);
-    const NewPost = new Post({authorUsername: "Seeder", authorID: author._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
+    const NewPost = new Post({authorUsername: username, authorID: author._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
     NewPost.save();
   }
 }

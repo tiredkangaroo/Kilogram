@@ -1,4 +1,3 @@
-
 const ConfirmEmail = () => {
     return (
         <div className="confirmEmail-prompt-parent">

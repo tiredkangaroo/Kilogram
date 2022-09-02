@@ -34,3 +34,6 @@
   background-clip: text;
   -webkit-text-fill-color: transparent;
 }
+.editor-create{
+  align-self: center;
+}

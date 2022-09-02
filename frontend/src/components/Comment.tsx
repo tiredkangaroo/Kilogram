@@ -1,4 +1,12 @@
-export default function Comment({data}){
+interface CommentData {
+  data: {
+    username: string,
+    userID: string,
+    text: string,
+    date: Date
+  }
+}
+export default function Comment({data}: CommentData): JSX.Element{
   const {username, userID, text, date} = data;
   const dateObject = new Date(date);
   return (
