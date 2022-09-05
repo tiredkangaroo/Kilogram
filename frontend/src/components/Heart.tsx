@@ -12,7 +12,7 @@ const Heart = ({user, post}: HeartDataInterface) => {
     const [counter, setCounter] = useState(0);
     useEffect(() => {
         if (post.likerIDs){
-            setHearted(Object.keys(post.likerIDs).includes(user._id))
+            setHearted(Object.keys(post.likerIDs).includes(user._id!))
             setCounter(Object.keys(post.likerIDs).length)
         }
     }, [post.likerIDs, user._id])

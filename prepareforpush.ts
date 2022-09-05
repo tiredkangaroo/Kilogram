@@ -14,7 +14,7 @@ const protectedFiles = ["billabong.ttf", "favicon.ico", "Noe-Text-Bold.ttf", "No
 console.log("Connecting to MongoDB.")
 //Connect to DB
 const Connect = async () => {
-  await mongoose.connect(process.env.MONGODB_URI)
+  await mongoose.connect(process.env.MONGODB_URI!)
 }
 await Connect();
 console.log("Connected to MongoDB.")
@@ -52,9 +52,7 @@ const SetupDemoUser = async () => {
   const email = "demo_user@demo.com"
   const username = "demo_user";
   const password = crypto.randomBytes(256).toString("hex"); //This password does not matter.
-  const confirm_token = crypto.randomBytes(256).toString("hex");
-  const confirmed = true;
-  const demo_user = new User({email: email, username: username, password: password, confirmToken: confirm_token, confirmed: confirmed, date_created: new Date()})
+  const demo_user = new User({email: email, username: username, password: password, date_created: new Date()})
   await demo_user.save();
 }
 await SetupDemoUser();

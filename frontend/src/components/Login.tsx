@@ -2,7 +2,7 @@ import { useRef } from "react";
 import axios from "axios";
 import UserDataInterface from "./data/interfaces/UserDataInterface";
 
-const Login = ({user} : {user: UserDataInterface}) => {
+const Login = ({user} : {user: UserDataInterface}): JSX.Element => {
     const emailRef = useRef<HTMLInputElement>(null);
     const passwordRef = useRef<HTMLInputElement>(null);
     const errorRef = useRef<HTMLParagraphElement>(null);
@@ -40,7 +40,8 @@ const Login = ({user} : {user: UserDataInterface}) => {
         )
     }
     else{
-        return window.location.replace("/")
+        window.location.replace("/")
+        return <></>
     }
 
 }

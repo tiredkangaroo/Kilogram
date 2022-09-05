@@ -19,7 +19,7 @@ const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 app.use(urlEncodedParser)
 app.use(bodyParser.json())
 
-app.use(cors({credentials: true, origin: 'http://localhost:3000'}, "*"))
+app.use(cors({credentials: true, origin: 'http://localhost:3000'}))
 app.use("/storage", express.static("storage"))
 app.use(express.json({limit: '0.151mb'}));
 app.use(express.urlencoded({limit: '0.151mb', extended: true}));
@@ -27,12 +27,12 @@ app.use(cookieParser());
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
 app.use("/", authrouter)
-await mongoose.connect(process.env.MONGODB_URI)
+await mongoose.connect(process.env.MONGODB_URI!)
 
 app.use(express.static('frontend/build'));
 
 if (process.env.NODE_ENV == "production"){
-  app.get('*', (req, res) => {
+  app.get('*', (req: express.Request, res: express.Response) => {
     res.sendFile(path.resolve('frontend', 'build', 'index.html'));
   })
 }
@@ -40,7 +40,7 @@ else{
   app.use("/db", DatabaseDeveloperRouter);
 }
 
-app.listen(process.env.PORT || 8000, "0.0.0.0", () => {
+app.listen(parseInt(process.env.PORT!) || 8000, "0.0.0.0", () => {
     console.log("Server is running.")
 })
 

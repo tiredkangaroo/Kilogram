@@ -41,7 +41,8 @@ const NewPost = ({user}: {user: UserDataInterface}) => {
         }
     }
     else if (user.isAnonymous){
-        return window.location.href = "/";
+        window.location.href = "/";
+        return <></>
     }
     else {
         return (

@@ -15,7 +15,7 @@ console.log("Starting seeding process...")
 console.log("Connecting to MongoDB.")
 //Connect to DB
 const Connect = async () => {
-  await mongoose.connect(process.env.MONGODB_URI)
+  await mongoose.connect(process.env.MONGODB_URI!)
 }
 await Connect();
 console.log("Connected to MongoDB.")
@@ -54,9 +54,7 @@ const username = usernames[Math.floor(Math.random() * 6)];
 const SetupUser = async () => {
   const email = "seeder@seeds.com";
   const password = crypto.randomBytes(256).toString("hex"); //This account should not be accessible by ANYONE.
-  const confirmToken = crypto.randomBytes(256).toString("hex") //The confirm token on /confirm can be used as a way into the account. This should remain inacessable.
-  const confirmed = true;
-  const SeederUser = new User({email: email, username: username, password: password, confirmToken: confirmToken, confirmed});
+  const SeederUser = new User({email: email, username: username, password: password});
   await SeederUser.save();
 }
 await SetupUser();
@@ -65,7 +63,7 @@ console.log("Setup seed user.")
 console.log("Setting up 20 posts.")
 const SetupPosts = async () => {
   const author = await User.findOne({})
-  async function downloadImage(url, filepath) {
+  async function downloadImage(url: string, filepath: string) {
     return imageDownloader.image({
       url,
       dest: filepath
@@ -84,7 +82,7 @@ const SetupPosts = async () => {
     const key = crypto.randomBytes(32).toString("hex");
     const quote = await getQuote();
     await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/${key}.jpg`);
-    const NewPost = new Post({authorUsername: username, authorID: author._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
+    const NewPost = new Post({authorUsername: username, authorID: author!._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
     NewPost.save();
   }
 }
@@ -95,9 +93,7 @@ const SetupDemoUser = async () => {
   const email = "demo_user@demo.com"
   const username = "demo_user";
   const password = crypto.randomBytes(256).toString("hex"); //This password does not matter.
-  const confirm_token = crypto.randomBytes(256).toString("hex");
-  const confirmed = true;
-  const demo_user = new User({email: email, username: username, password: password, confirmToken: confirm_token, confirmed: confirmed, date_created: new Date()})
+  const demo_user = new User({email: email, username: username, password: password, date_created: new Date()})
   await demo_user.save();
 }
 await SetupDemoUser();

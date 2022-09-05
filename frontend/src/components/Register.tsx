@@ -1,6 +1,5 @@
 import axios from "axios";
 import React, { useRef } from "react";
-React;
 const Register = () => {
     const emailRef = useRef<HTMLInputElement>(null);
     const usernameRef = useRef<HTMLInputElement>(null);
@@ -17,11 +16,7 @@ const Register = () => {
         params.append("password_confirmation", passwordConfirmRef.current!.value);
         axios.post("/register", params, {withCredentials: true}).then(async (response) => {
             if (response.status === 200){
-                const confirmParams = new URLSearchParams();
-                confirmParams.append("email", emailRef.current!.value)
-                confirmParams.append("token", response.data)
-                await axios.post("/sendConfirmationToken", confirmParams)
-                window.location.href = "/confirmEmail"
+              window.location.href = "/"
             }
             else {
                 errorDisplayRef.current!.innerText = response.data;

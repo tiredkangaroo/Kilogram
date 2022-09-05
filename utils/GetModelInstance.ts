@@ -1,6 +1,6 @@
 import Post from "../models/Post.js";
 
-export async function getPost(id){
+export async function getPost(id: string){
   let result;
   try{
     result = await Post.findOne({_id: id});

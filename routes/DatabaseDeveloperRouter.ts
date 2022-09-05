@@ -5,10 +5,11 @@ import User from "../models/User.js";
 import Session from "../models/Session.js";
 import Post from "../models/Post.js";
 import { Route } from "../utils/route.js";
+import { RequestInterface } from "../utils/RequestResponseInterfaces.js";
 const DatabaseDeveloperRouter = express.Router();
 
 class Routes{
-  async index(req, res){
+  async index(req: RequestInterface, res: express.Response){
     fs.readFile(path.resolve() + '/routes/index.html', async (err, data) => {
       if (err){
         res.send(`<pre>${err}</pre>`)

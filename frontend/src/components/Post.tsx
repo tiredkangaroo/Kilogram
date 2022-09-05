@@ -3,7 +3,7 @@ import * as React from 'react';
 import PostRenderer from "./PostRenderer"
 import Comments from './Comments';
 import UserDataInterface from './data/interfaces/UserDataInterface';
-const Post = (user: UserDataInterface) => {
+const Post = ({user}: {user: UserDataInterface}) => {
     const [post, setPost] = React.useState(null);
     React.useEffect(() => {
         if (!(window.location.hash.length > 1)){window.location.href = "/"};

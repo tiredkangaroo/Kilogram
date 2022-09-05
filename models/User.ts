@@ -1,5 +1,12 @@
 import mongoose from "mongoose";
 
+export interface UserInterface extends mongoose.Document {
+  // _id: mongoose.Types.ObjectId,
+  email: string,
+  username: string,
+  password: string,
+}
+
 const UserSchema = new mongoose.Schema({
     email: {
         type: String,
@@ -13,14 +20,6 @@ const UserSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    confirmToken: {
-        type: String,
-        required: true
-    },
-    confirmed: {
-        type: Boolean,
-        required: true
-    }
 })
 
 const User = mongoose.model('User', UserSchema)

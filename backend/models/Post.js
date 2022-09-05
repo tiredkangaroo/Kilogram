@@ -1,7 +1,6 @@
 import mongoose from "mongoose";
-
 const PostSchema = new mongoose.Schema({
-    authorUsername:{ //not to be inherited from User(authorID).email
+    authorUsername: {
         type: String,
         required: true
     },
@@ -11,7 +10,7 @@ const PostSchema = new mongoose.Schema({
     },
     imageKey: {
         type: String,
-        required: false, 
+        required: false,
     },
     text: {
         type: String,
@@ -21,16 +20,16 @@ const PostSchema = new mongoose.Schema({
         type: Date,
         required: true
     },
-    likerIDs: { //Object of id and time {'jb2h52n', ISODate("2022-08-01T19:24:42.308Z")}
+    likerIDs: {
         type: Object,
         minimize: false,
         required: false
     },
-    comments: { //Array of objects that have the userid, comment_text, and the time.
+    comments: {
         // [{username: "demo_user", userID: 'jb2h52n', text: "yo that's fire", date: ISODate("2022-08-20T22:19:02.269Z")}] 
         type: Array,
         required: false
     }
-})
-const Post = mongoose.model('Post', PostSchema)
+});
+const Post = mongoose.model('Post', PostSchema);
 export default Post;
