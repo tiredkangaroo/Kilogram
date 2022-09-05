@@ -1,0 +1,41 @@
+.comments{
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.comments-newcomment{
+  display: flex;
+  width: 100%;
+  height: 8vh;
+  justify-content: center;
+  align-items: center;
+  vertical-align: middle;
+}
+.comments-newcomment-button{
+  height: 4vh;
+}
+.comments-newcomment-text{
+  width: 45vw;
+  resize: none;
+}
+.comment{
+  /* border: 1px solid black; */
+  margin-top: 0.8rem;
+  border-bottom: 0.014rem solid black;
+}
+.comment-username-date{
+  display: inline-flex;
+  align-items: center;
+  width: 50vw;
+  justify-content:space-between;
+}
+.comment-username-date>span{
+  color: rgb(199, 199, 199);
+  margin-left: 3vw;
+}
+.comment-text{
+  text-align: center;
+}

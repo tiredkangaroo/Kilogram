@@ -10,6 +10,8 @@
 .editor-window{
   display: flex;
   gap: 0.67rem;
+  margin-left: 0.2rem;
+
 }
 .editor-window>p{
   width: calc(100vw - 1rem - 0.67rem - 48%);
@@ -22,6 +24,16 @@
 .editor-window>p>h1{
   text-align: center;
 }
+.editor-error-parent{
+  text-align: center;
+}
 .editor-error{
   display: none;
+  background: linear-gradient(var(--website-theme-gradient-deg), var(--website-theme));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.editor-create{
+  align-self: center;
 }
