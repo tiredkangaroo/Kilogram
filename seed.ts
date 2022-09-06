@@ -27,8 +27,8 @@ const DeleteAll = async () => {
       if (err){
         fs.mkdirSync("/storage/UserCreatedContent")
       }
+      console.log(files)
       files.forEach((file) => {
-        console.log(file)
         if (!(protectedFiles.includes(file))){
           try{
             fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
