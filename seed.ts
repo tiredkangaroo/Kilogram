@@ -22,28 +22,33 @@ console.log("Connected to MongoDB.")
 // Reset
 console.log("Deleting all data in the database.")
 const DeleteAll = async () => {
-  fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
-    if (err){
-      fs.mkdirSync("/storage/UserCreatedContent")
-    }
-    files.forEach((file) => {
-      if (!(protectedFiles.includes(file))){
-        try{
-          fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-            if (err){
-              console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-            }
-            else{
-              console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-            }
-          });
-        }
-        catch (e: unknown) {
-          console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-        }
+  try{
+    fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
+      if (err){
+        fs.mkdirSync("/storage/UserCreatedContent")
       }
+      files.forEach((file) => {
+        if (!(protectedFiles.includes(file))){
+          try{
+            fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
+              if (err){
+                console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+              }
+              else{
+                console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+              }
+            });
+          }
+          catch (e: unknown) {
+            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+          }
+        }
+      })
     })
-  })
+  }
+  catch (e: unknown){
+    fs.mkdirSync("/storage/UserCreatedContent")
+  }
   await User.deleteMany({});
   await Post.deleteMany({});
   await Session.deleteMany({});
