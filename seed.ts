@@ -24,22 +24,20 @@ console.log("Deleting all data in the database.")
 const DeleteAll = async () => {
   fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
     if (err){
-      console.error(err);
+      fs.mkdirSync("/storage/UserCreatedContent")
     }
-    else{
-      files.forEach((file) => {
-        if (!(protectedFiles.includes(file))){
-          fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-            if (err){
-              console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-            }
-            else{
-              console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-            }
-          });
-        }
-      })
-    }
+    files.forEach((file) => {
+      if (!(protectedFiles.includes(file))){
+        fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
+          if (err){
+            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+          }
+          else{
+            console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+          }
+        });
+      }
+    })
   })
   await User.deleteMany({});
   await Post.deleteMany({});
