@@ -28,14 +28,19 @@ const DeleteAll = async () => {
     }
     files.forEach((file) => {
       if (!(protectedFiles.includes(file))){
-        fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-          if (err){
-            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-          }
-          else{
-            console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-          }
-        });
+        try{
+          fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
+            if (err){
+              console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+            }
+            else{
+              console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+            }
+          });
+        }
+        catch (e: unknown) {
+          console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+        }
       }
     })
   })
