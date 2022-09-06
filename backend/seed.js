@@ -21,19 +21,19 @@ console.log("Connected to MongoDB.");
 // Reset
 console.log("Deleting all data in the database.");
 const DeleteAll = async () => {
-    fs.readdir(path.resolve() + "/storage", (err, files) => {
+    fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
         if (err) {
             console.error(err);
         }
         else {
             files.forEach((file) => {
                 if (!(protectedFiles.includes(file))) {
-                    fs.unlink(path.resolve() + "/storage/" + file, (err) => {
+                    fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
                         if (err) {
-                            console.log(`Unable to delete ${path.resolve() + "/storage/" + file}.`);
+                            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
                         }
                         else {
-                            console.log(`Deleted ${path.resolve() + "/storage/" + file}.`);
+                            console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
                         }
                     });
                 }
@@ -78,7 +78,7 @@ const SetupPosts = async () => {
     for (let i = 0; i < 20; i++) {
         const key = crypto.randomBytes(32).toString("hex");
         const quote = await getQuote();
-        await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/${key}.jpg`);
+        await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/UserCreatedContent/${key}.jpg`);
         const NewPost = new Post({ authorUsername: username, authorID: author._id, text: quote, imageKey: key + ".jpg", date_created: new Date() });
         NewPost.save();
     }

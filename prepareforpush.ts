@@ -21,19 +21,19 @@ console.log("Connected to MongoDB.")
 
 console.log("Deleting all data in the database.")
 const DeleteAll = async () => {
-  fs.readdir(path.resolve() + "/storage", (err, files) => {
+  fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
     if (err){
       console.error(err);
     }
     else{
       files.forEach((file) => {
         if (!(protectedFiles.includes(file))){
-          fs.unlink(path.resolve() + "/storage/" + file, (err) => {
+          fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
             if (err){
-              console.log(`Unable to delete ${path.resolve() + "/storage/" + file}.`)
+              console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
             }
             else{
-              console.log(`Deleted ${path.resolve() + "/storage/" + file}.`)
+              console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
             }
           });
         }

@@ -110,7 +110,7 @@ export default function PostRenderer({user, post, hideURL}: PostDataInterface): 
     })
     const RenderImage = () => {
         if (post.imageKey){
-            return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/${post.imageKey}`} alt="Unable to load."/>)
+            return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/UserCreatedContent/${post.imageKey}`} alt="Unable to load."/>)
         }
         else{
           return <></>

@@ -7,7 +7,10 @@
     "frontend-install": "npm install --prefix frontend",
     "frontend": "npm start --prefix frontend",
     "heroku-postbuild": "npm run frontend-install && node seed.js && npm run build --prefix frontend",
-    "dev": "concurrently \"tsc --watch\" \"npm run server\" \"npm run frontend\" "
+    "build": "npm install && tsc && npm run frontend-install && node backend/seed.js && npm run build --prefix frontend",
+    "production": "npm run build && node backend/app.js && serve -s frontend/build",
+    "setup-dev": "npm install && npm frontend-install && npm run dev",
+    "dev": "tsc && concurrently \"tsc --watch\" \"npm run server\" \"npm run frontend\" "
   },
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
@@ -39,6 +42,7 @@
     "react-icons": "^4.4.0",
     "react-router-dom": "^6.3.0",
     "sass": "^1.54.0",
+    "serve": "^14.0.1",
     "validator": "^13.7.0"
   },
   "type": "module",
