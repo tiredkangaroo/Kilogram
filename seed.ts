@@ -97,7 +97,7 @@ const SetupPosts = async () => {
   for (let i = 0; i < 20; i++){
     const key = crypto.randomBytes(32).toString("hex");
     const quote = await getQuote();
-    await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/UserCreatedContent/${key}.jpg`);
+    await downloadImage("https://random.imagecdn.app/400/200", path.resolve() + `/storage/UserCreatedContent/${key}.jpg`);
     const NewPost = new Post({authorUsername: username, authorID: author!._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
     NewPost.save();
   }
