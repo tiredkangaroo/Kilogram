@@ -6,7 +6,7 @@ interface LikerIDsInterface {
 export interface PostInterface extends mongoose.Document {
   authorUsername: string,
   authorID: string,
-  imageKey: string,
+  image: Buffer,
   text: string,
   date_created: Date,
   likerIDs: LikerIDsInterface,
@@ -22,8 +22,8 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    imageKey: {
-        type: String,
+    image: {
+        type: Buffer,
         required: false, 
     },
     text: {

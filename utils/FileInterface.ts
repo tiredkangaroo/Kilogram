@@ -1,5 +1,4 @@
-import {Express} from "express";
-import multer from "multer";
+import { Express } from "express";
 
 export interface FileInterface extends Express.Multer.File {
   newName?: string

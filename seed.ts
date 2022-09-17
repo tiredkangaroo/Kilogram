@@ -4,9 +4,7 @@ import Session from "./models/Session.js";
 import crypto from "crypto";
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
-import imageDownloader from "image-downloader";
 import path from "path";
-import fs from "fs";
 import fetch from "node-fetch";
 
 dotenv.config();
@@ -21,26 +19,8 @@ await Connect();
 console.log("Connected to MongoDB.")
 // Reset
 console.log("Deleting all data in the database.")
+
 const DeleteAll = async () => {
-  fs.readdir(path.resolve() + "/storage", (err, files) => {
-    if (err){
-      console.error(err);
-    }
-    else{
-      files.forEach((file) => {
-        if (!(protectedFiles.includes(file))){
-          fs.unlink(path.resolve() + "/storage/" + file, (err) => {
-            if (err){
-              console.log(`Unable to delete ${path.resolve() + "/storage/" + file}.`)
-            }
-            else{
-              console.log(`Deleted ${path.resolve() + "/storage/" + file}.`)
-            }
-          });
-        }
-      })
-    }
-  })
   await User.deleteMany({});
   await Post.deleteMany({});
   await Session.deleteMany({});
@@ -63,11 +43,11 @@ console.log("Setup seed user.")
 console.log("Setting up 20 posts.")
 const SetupPosts = async () => {
   const author = await User.findOne({})
-  async function downloadImage(url: string, filepath: string) {
-    return imageDownloader.image({
-      url,
-      dest: filepath
-    })
+  async function downloadImage(url: string) {
+    const imageResponse = await fetch(url);
+    const imageBlob:any = await imageResponse.blob();
+    const buffer = await imageBlob.arrayBuffer();
+    return Buffer.from(buffer, "hex")
   }
   async function getQuote(){
     const url = "https://api.muetab.com/quotes/random?language=English"
@@ -78,12 +58,12 @@ const SetupPosts = async () => {
     const quote = quoteJSON.quote;
     return quote;
   }
-  for (let i = 0; i < 20; i++){
+  for (let i = 0; i < 5; i++){
     const key = crypto.randomBytes(32).toString("hex");
     const quote = await getQuote();
-    await downloadImage("https://picsum.photos/400/200", path.resolve() + `/storage/${key}.jpg`);
-    const NewPost = new Post({authorUsername: username, authorID: author!._id, text: quote, imageKey: key + ".jpg", date_created: new Date()});
-    NewPost.save();
+    const image = await downloadImage("https://random.imagecdn.app/400/200");
+    const NewPost = new Post({authorUsername: username, authorID: author!._id, text: quote, image:image, date_created: new Date()});
+    await NewPost.save();
   }
 }
 await SetupPosts();
