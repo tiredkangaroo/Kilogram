@@ -8,8 +8,8 @@ const PostSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    imageKey: {
-        type: String,
+    image: {
+        type: Buffer,
         required: false,
     },
     text: {

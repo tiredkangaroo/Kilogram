@@ -6,14 +6,12 @@ import { UserInterface } from "../models/User.js";
 import bcrypt from 'bcryptjs';
 import crypto from 'crypto';
 import Session from "../models/Session.js";
-import { google } from "googleapis";
 import dotenv from 'dotenv';
 import Post from "../models/Post.js";
 import { ProtectedRoute } from "../utils/loginRequired.js";
 import { Route } from "../utils/route.js";
 import { RequestInterface } from "../utils/RequestResponseInterfaces.js";
 
-const OAuth2 = google.auth.OAuth2;
 const authrouter = express.Router()
 const urlEncodedParser = bodyParser.urlencoded({ extended: false })
 dotenv.config();

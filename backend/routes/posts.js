@@ -5,23 +5,13 @@ import { ProtectedRoute } from "../utils/loginRequired.js";
 import bodyParser from "body-parser";
 import mongoose from 'mongoose';
 import multer from 'multer';
-import crypto from "crypto";
-import { unlink } from "fs";
 const urlEncodedParser = bodyParser.urlencoded({ extended: true });
 const FILE_TYPE_MAP = {
     "image/png": "png",
     "image/jpeg": "jpeg",
     "image/jpg": "jpg",
 };
-const storage = multer.diskStorage({
-    destination: (_, __, cb) => {
-        cb(null, 'storage/');
-    },
-    filename: (_, file, cb) => {
-        file.newName = crypto.randomBytes(32).toString("hex") + "." + FILE_TYPE_MAP[file.mimetype];
-        cb(null, file.newName);
-    }
-});
+const storage = multer.memoryStorage();
 const reversed = (arr) => {
     let newArray = [];
     for (let i = arr.length - 1; i >= 0; i--) {
@@ -34,8 +24,8 @@ const ObjectId = mongoose.Types.ObjectId;
 class Routes {
     async newPost(req, res) {
         let text = req.body.text;
-        if (text.length > 150304) {
-            return res.status(400).send("Limit for the post is 150,304 characters.");
+        if (text.length > 120) {
+            return res.status(400).send("Limit for the post is 120 characters.");
         }
         const author = req.user;
         const authorID = author._id;
@@ -49,13 +39,15 @@ class Routes {
             likerIDs: likerIDs,
             comments: comments,
             text: text,
-            imageKey: req.file.newName
+            image: req.file.buffer
         });
         await newPost.save();
         return res.status(200).json(newPost._id);
     }
     async all(_, res) {
-        const result = await Post.find({});
+        const query = Post.find({});
+        query.select("-image");
+        const result = await query.exec();
         return res.json(reversed(result));
     }
     async post(req, res) {
@@ -84,9 +76,6 @@ class Routes {
         const post = await Post.findOne({ _id: new ObjectId(postID) });
         if (!post) {
             res.status(404).send("Post deletion process was unsucessful. Post was not found.");
-        }
-        if (post.imageKey) {
-            unlink(`storage/${post.imageKey}`, () => { });
         }
         const sessionUserID = req.user._id.toString(); //the user session and its id
         // console.log(sessionUserID, post.authorID)

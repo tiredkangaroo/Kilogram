@@ -3,10 +3,18 @@ import { getPost } from "./GetModelInstance.js";
 import { RequestInterface } from "./RequestResponseInterfaces.js";
 export class Validations{
   async post(req:RequestInterface){
-    let requestedPost: unknown = await getPost(req.body.postID);
-    if (requestedPost){
-      req.post = requestedPost! as PostInterface;
+    let useID;
+    if (req.body.postID){
+      useID = req.body.postID!
     }
+    else {
+      useID = req.query.postID!
+    }
+    let requestedPost: unknown = await getPost(useID!)!;
+    if (requestedPost){
+      req.post = requestedPost as PostInterface;
+    }
+    // console.log(requestedPost)
     return req.post;
   }
 }

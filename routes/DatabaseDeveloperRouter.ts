@@ -10,7 +10,7 @@ const DatabaseDeveloperRouter = express.Router();
 
 class Routes{
   async index(req: RequestInterface, res: express.Response){
-    fs.readFile(path.resolve() + '/routes/index.html', async (err, data) => {
+    fs.readFile(path.resolve() + '/routes/ddr.html', async (err, data) => {
       if (err){
         res.send(`<pre>${err}</pre>`)
       }

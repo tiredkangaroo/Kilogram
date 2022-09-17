@@ -13,7 +13,6 @@ interface PostDataInterface{
     _id: string,
     authorUsername: string,
     authorID: string,
-    imageKey: string,
     text: string,
     date_created: Date,
     likerIDs: Object,
@@ -103,18 +102,15 @@ export default function PostRenderer({user, post, hideURL}: PostDataInterface): 
     //     }
     // }
     window.addEventListener("resize", () => {
-        if (post.imageKey && imageRef.current!){
+        if (imageRef.current!){
             imageRef.current!.width = window.innerWidth/2.1
         }
         // postResizer();
     })
-    const RenderImage = () => {
-        if (post.imageKey){
-            return (<img onLoad={image} className="post-img" ref={imageRef} src={`storage/UserCreatedContent/${post.imageKey}`} alt="Unable to load."/>)
-        }
-        else{
-          return <></>
-        }
+    const RenderImage: any = () => {
+      axios.get(`/storage/UserCreatedContent?postID=${post._id}`, {responseType: "blob"}).then((resp) => {
+        imageRef.current!.src = URL.createObjectURL(resp.data); 
+      })
     }
     let markdown;
     if (post.text){
@@ -136,7 +132,8 @@ export default function PostRenderer({user, post, hideURL}: PostDataInterface): 
                 <div ref={postRef} className="post">
                     <p className="post-username">{post.authorUsername}</p>
                     <ManagementButtons />
-                    <RenderImage />
+                    <img onLoad={image} className="post-img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAQAAAC1HAwCAAAAC0lEQVR42mNkYAAAAAYAAjCB0C8AAAAASUVORK5CYII="ref={imageRef} alt="Unable to load."/>
+                    <RenderImage/>
                     <p dangerouslySetInnerHTML={markdown()} ref={postBodyRef} className="post-body"></p>
                     <div className="post-hearts-parent"><Heart user={user} post={post}/></div>
                 </div>

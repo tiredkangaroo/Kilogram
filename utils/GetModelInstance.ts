@@ -1,9 +1,13 @@
 import Post from "../models/Post.js";
+import mongoose, { ObjectId } from "mongoose";
 
+const ObjectId = mongoose.Types.ObjectId
 export async function getPost(id: string){
   let result;
   try{
-    result = await Post.findOne({_id: id});
+    // const objid:unknown = new ObjectId(id)
+    // console.log(objid)
+    result = await Post.findById(id);
   }
   catch (e){
     return false;

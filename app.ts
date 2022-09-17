@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 import authrouter from './routes/auth.js';
 import postsRouter from "./routes/posts.js";
 import commentsRouter from './routes/comments.js';
+import StorageRouter from './routes/storage.js';
 import DatabaseDeveloperRouter from "./routes/DatabaseDeveloperRouter.js";
 
 import cookieParser from 'cookie-parser';
@@ -26,13 +27,13 @@ app.use(express.urlencoded({limit: '1.151mb', extended: true}));
 app.use(cookieParser());
 app.use("/posts", postsRouter);
 app.use("/comments", commentsRouter);
+app.use("/storage/UserCreatedContent", StorageRouter);
 app.use("/", authrouter)
 await mongoose.connect(process.env.MONGODB_URI!)
 
 app.use(express.static('frontend/build'));
 
 if (process.env.NODE_ENV == "production"){
-  console.log("ee")
   app.get('*', (req: express.Request, res: express.Response) => {
     res.sendFile(path.resolve('frontend', 'build', 'index.html'));
   })

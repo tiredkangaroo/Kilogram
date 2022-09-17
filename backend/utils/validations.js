@@ -1,10 +1,18 @@
 import { getPost } from "./GetModelInstance.js";
 export class Validations {
     async post(req) {
-        let requestedPost = await getPost(req.body.postID);
+        let useID;
+        if (req.body.postID) {
+            useID = req.body.postID;
+        }
+        else {
+            useID = req.query.postID;
+        }
+        let requestedPost = await getPost(useID);
         if (requestedPost) {
             req.post = requestedPost;
         }
+        // console.log(requestedPost)
         return req.post;
     }
 }
