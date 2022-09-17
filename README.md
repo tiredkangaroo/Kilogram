@@ -22,3 +22,5 @@ First time:
 Any other time: 
   - `npm run dev`
   - Now served on `http://localhost:3000`, but binded to all IP addresses
+=======
+![](https://SleepyVigilantSolution.supcoolak.repl.co)
