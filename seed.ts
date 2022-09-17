@@ -25,7 +25,7 @@ const DeleteAll = async () => {
   try{
     fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
       if (err){
-        fs.mkdirSync("/storage/UserCreatedContent")
+        fs.mkdirSync("../storage/UserCreatedContent", {recursive: true});
       }
       console.log(files)
       files.forEach((file) => {
