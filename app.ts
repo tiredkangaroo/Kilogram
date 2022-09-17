@@ -15,8 +15,8 @@ import path from 'path';
 
 dotenv.config();
 
-const app = express()
-const urlEncodedParser = bodyParser.urlencoded({limit: '1.151mb', extended: true })
+const app = express();
+const urlEncodedParser = bodyParser.urlencoded({limit: '1.151mb', extended: true });
 app.use(urlEncodedParser)
 app.use(bodyParser.json())
 
