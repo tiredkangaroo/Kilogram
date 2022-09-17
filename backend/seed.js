@@ -21,25 +21,34 @@ console.log("Connected to MongoDB.");
 // Reset
 console.log("Deleting all data in the database.");
 const DeleteAll = async () => {
-    fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
-        if (err) {
-            console.error(err);
-        }
-        else {
+    try {
+        fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
+            if (err) {
+                fs.mkdirSync("/storage/UserCreatedContent");
+            }
+            console.log(files);
             files.forEach((file) => {
                 if (!(protectedFiles.includes(file))) {
-                    fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-                        if (err) {
-                            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
-                        }
-                        else {
-                            console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
-                        }
-                    });
+                    try {
+                        fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
+                            if (err) {
+                                console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
+                            }
+                            else {
+                                console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
+                            }
+                        });
+                    }
+                    catch (e) {
+                        console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
+                    }
                 }
             });
-        }
-    });
+        });
+    }
+    catch (e) {
+        fs.mkdirSync("/storage/UserCreatedContent");
+    }
     await User.deleteMany({});
     await Post.deleteMany({});
     await Session.deleteMany({});
@@ -61,10 +70,16 @@ console.log("Setting up 20 posts.");
 const SetupPosts = async () => {
     const author = await User.findOne({});
     async function downloadImage(url, filepath) {
-        return imageDownloader.image({
-            url,
-            dest: filepath
-        });
+        try {
+            return imageDownloader.image({
+                url,
+                dest: filepath
+            });
+        }
+        catch (e) {
+            console.log(e);
+            process.exit();
+        }
     }
     async function getQuote() {
         const url = "https://api.muetab.com/quotes/random?language=English";

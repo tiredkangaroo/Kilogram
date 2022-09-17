@@ -73,10 +73,16 @@ console.log("Setting up 20 posts.")
 const SetupPosts = async () => {
   const author = await User.findOne({})
   async function downloadImage(url: string, filepath: string) {
-    return imageDownloader.image({
-      url,
-      dest: filepath
-    })
+    try{
+      return imageDownloader.image({
+        url,
+        dest: filepath
+      })
+    }
+    catch (e) {
+      console.log(e);
+      process.exit();
+    }
   }
   async function getQuote(){
     const url = "https://api.muetab.com/quotes/random?language=English"
