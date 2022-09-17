@@ -27,28 +27,29 @@ const DeleteAll = async () => {
       if (err){
         fs.mkdirSync("../storage/UserCreatedContent", {recursive: true});
       }
-      console.log(files)
-      files.forEach((file) => {
-        if (!(protectedFiles.includes(file))){
-          try{
-            fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-              if (err){
-                console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-              }
-              else{
-                console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-              }
-            });
+      if (files){
+        files.forEach((file) => {
+          if (!(protectedFiles.includes(file))){
+            try{
+              fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
+                if (err){
+                  console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+                }
+                else{
+                  console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+                }
+              });
+            }
+            catch (e: unknown) {
+              console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
+            }
           }
-          catch (e: unknown) {
-            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`)
-          }
-        }
-      })
+        })
+      }
     })
   }
   catch (e: unknown){
-    fs.mkdirSync("/storage/UserCreatedContent")
+    fs.mkdirSync("../storage/UserCreatedContent", { recursive: true })
   }
   await User.deleteMany({});
   await Post.deleteMany({});
