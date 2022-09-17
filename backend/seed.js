@@ -4,8 +4,6 @@ import Session from "./models/Session.js";
 import crypto from "crypto";
 import dotenv from 'dotenv';
 import mongoose from "mongoose";
-import path from "path";
-import fs from "fs";
 import fetch from "node-fetch";
 dotenv.config();
 const protectedFiles = ["billabong.ttf", "favicon.ico", "Noe-Text-Bold.ttf", "Noe-Text-Regular.ttf"];
@@ -20,35 +18,6 @@ console.log("Connected to MongoDB.");
 // Reset
 console.log("Deleting all data in the database.");
 const DeleteAll = async () => {
-    try {
-        fs.readdir(path.resolve() + "/storage/UserCreatedContent/", (err, files) => {
-            if (err) {
-                fs.mkdirSync("/storage/UserCreatedContent", { recursive: true });
-            }
-            if (files) {
-                files.forEach((file) => {
-                    if (!(protectedFiles.includes(file))) {
-                        try {
-                            fs.unlink(path.resolve() + "/storage/UserCreatedContent/" + file, (err) => {
-                                if (err) {
-                                    console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
-                                }
-                                else {
-                                    console.log(`Deleted ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
-                                }
-                            });
-                        }
-                        catch (e) {
-                            console.log(`Unable to delete ${path.resolve() + "/storage/UserCreatedContent/" + file}.`);
-                        }
-                    }
-                });
-            }
-        });
-    }
-    catch (e) {
-        fs.mkdirSync("/storage/UserCreatedContent", { recursive: true });
-    }
     await User.deleteMany({});
     await Post.deleteMany({});
     await Session.deleteMany({});
